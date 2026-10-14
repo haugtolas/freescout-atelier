@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.8
+
+- Teams (and any card with a round icon): the glyph is centred exactly in its disc.
+- Reports: date fields keep their value inside the box. On iPhone the value sat lower than its box and spilled over the border.
+
 ## 1.5.7
 
 - Page loads (light theme): the class another dark-mode module puts on the page is now removed the instant it appears, before the browser paints, so its black blocks no longer flash in the top bar while a page loads. The menu items and their lists also keep a transparent background whatever a module's CSS says.
