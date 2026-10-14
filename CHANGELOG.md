@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.6
+
+- Light theme: another dark-mode module that switches on a bare `dm` class (rules such as `.dm .navbar-default`) could leave parts of the top bar dark. Atelier now removes that class and those rules, keeps the menu items and their lists transparent, and the light-theme guard no longer touches the top bar.
+- Home: the cog / envelope / arrow icons are centred exactly in their buttons, whatever the browser's baseline handling.
+
 ## 1.5.5
 
 - New: the sender's logo is used as the avatar of customers who have no photo (like Canary Mail). The server fetches it once from a public logo service, keeps it 30 days and only sends the domain name. Personal addresses (Gmail, Outlook...) are skipped. Can be turned off in Settings > Atelier.

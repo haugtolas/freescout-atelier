@@ -5,6 +5,8 @@
     var root = document.documentElement;
     var DARK_TOKEN = /(^|[^a-z0-9])(dark|night)([-_ ]?(mode|theme|skin|ui))?($|[^a-z0-9])/i;
     var DARK_SAFE = /(link|table|btn|text|bg|navbar|label)-dark|dark-header|dark-?(green|blue|red)/i;
+    /* some dark-mode modules switch on a bare ".dm" class (".dm .navbar-default {...}"); FreeScout's own ".dm-scrollable" is not one */
+    var DM_SEL = /(^|[\s,>+~(])\.dm(?![\w-])/;
     var ATTRS = ['data-theme', 'data-bs-theme', 'data-color-scheme', 'data-color-mode', 'data-mode', 'data-dark', 'theme', 'color-scheme'];
     var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
@@ -569,7 +571,7 @@
         if (!el || !el.classList) { return; }
         var cl = Array.prototype.slice.call(el.classList);
         for (var i = 0; i < cl.length; i++) {
-            if (DARK_TOKEN.test(cl[i]) && !DARK_SAFE.test(cl[i]) && cl[i].indexOf('at-') !== 0) { el.classList.remove(cl[i]); }
+            if ((cl[i] === 'dm' || (DARK_TOKEN.test(cl[i]) && !DARK_SAFE.test(cl[i]))) && cl[i].indexOf('at-') !== 0) { el.classList.remove(cl[i]); }
         }
         for (var j = 0; j < ATTRS.length; j++) {
             var v = el.getAttribute(ATTRS[j]);
@@ -582,8 +584,8 @@
             var r = list[j];
             try {
                 if (r.cssRules && r.type !== 1) { stripRules(r.cssRules, r); }
-                else if (r.type === 1 && r.selectorText && /dark|night/i.test(r.selectorText) && r.selectorText.indexOf('data-at-') === -1) {
-                    var keep = r.selectorText.split(',').filter(function (sel) { return !(DARK_TOKEN.test(sel) && !DARK_SAFE.test(sel)); });
+                else if (r.type === 1 && r.selectorText && (/dark|night/i.test(r.selectorText) || DM_SEL.test(r.selectorText)) && r.selectorText.indexOf('data-at-') === -1) {
+                    var keep = r.selectorText.split(',').filter(function (sel) { return !((DARK_TOKEN.test(sel) && !DARK_SAFE.test(sel)) || DM_SEL.test(sel)); });
                     if (keep.length === 0) { (sheet.deleteRule ? sheet : r.parentStyleSheet).deleteRule(j); }
                 }
             } catch (e) {}
@@ -609,7 +611,7 @@
 
     /* ---- contrast guard (light theme): a dark panel or pale text left behind by another module on a light page ---- */
     var lightTimer = null;
-    var LSKIP = 'img, svg, video, canvas, iframe, script, style, pre, code, .at-mail, .at-mail *, .note-editable, .note-editable *, .at-mail-toggle, .tooltip, .tooltip *, .popover, .popover *, .modal-backdrop, .featherlight, .featherlight *, .btn, .btn *, .label, .badge, .progress, .progress *, .navbar-toggle, .navbar-toggle *, .select2-selection__choice, .alert, .alert *, .caret, input, textarea, select, option, .conv-fader, .at-keep, .at-keep *';
+    var LSKIP = '.navbar, .navbar *, img, svg, video, canvas, iframe, script, style, pre, code, .at-mail, .at-mail *, .note-editable, .note-editable *, .at-mail-toggle, .tooltip, .tooltip *, .popover, .popover *, .modal-backdrop, .featherlight, .featherlight *, .btn, .btn *, .label, .badge, .progress, .progress *, .navbar-toggle, .navbar-toggle *, .select2-selection__choice, .alert, .alert *, .caret, input, textarea, select, option, .conv-fader, .at-keep, .at-keep *';
     function effBg(el) {
         for (var n = el; n && n.nodeType === 1; n = n.parentNode) {
             var c = rgbOf(getComputedStyle(n).backgroundColor);

@@ -2014,3 +2014,11 @@ html[data-at-theme="dark"] .thread-body .at-mail { padding: 10px 8px; border-rad
 
 html[data-at-theme] .at-from { display: none !important; }
 html[data-at-theme] img.at-fav { object-fit: contain; padding: 20%; box-sizing: border-box; background-color: #fff !important; border-radius: 50%; border: 1px solid var(--at-line); }
+
+
+html[data-at-theme] .navbar-default .navbar-nav, html[data-at-theme] .navbar-default .navbar-nav > li, html[data-at-theme] .navbar-default .navbar-header { background: transparent !important; background-image: none !important; }
+
+
+html[data-at-theme] .dash-card .btn-group-justified > .btn { vertical-align: middle; }
+html[data-at-theme] .dash-card .btn-group-justified > .btn > i.glyphicon { top: 0 !important; display: block; width: 16px; height: 16px; margin: 0 auto; line-height: 16px !important; }
+html[data-at-theme] .dash-card .btn-group-justified > .btn > i.glyphicon:before { display: block; width: 16px; height: 16px; line-height: 16px; vertical-align: 0; text-align: center; }

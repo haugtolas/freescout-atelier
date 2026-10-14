@@ -248,3 +248,11 @@ html[data-at-theme] .conv-info .btn-group button i:before { vertical-align: 0; }
 /* ---- sender's logo used as the avatar (Settings > Atelier) ---- */
 html[data-at-theme] .at-from { display: none !important; }
 html[data-at-theme] img.at-fav { object-fit: contain; padding: 20%; box-sizing: border-box; background-color: #fff !important; border-radius: 50%; border: 1px solid var(--at-line); }
+
+/* ---- top bar: only the bar itself and the links are painted; a module's rule must not turn the menu items or their lists dark ---- */
+html[data-at-theme] .navbar-default .navbar-nav, html[data-at-theme] .navbar-default .navbar-nav > li, html[data-at-theme] .navbar-default .navbar-header { background: transparent !important; background-image: none !important; }
+
+/* ---- home cards: icons in the three-button strip sit on the exact middle of the button, whatever the browser's baseline rules ---- */
+html[data-at-theme] .dash-card .btn-group-justified > .btn { vertical-align: middle; }
+html[data-at-theme] .dash-card .btn-group-justified > .btn > i.glyphicon { top: 0 !important; display: block; width: 16px; height: 16px; margin: 0 auto; line-height: 16px !important; }
+html[data-at-theme] .dash-card .btn-group-justified > .btn > i.glyphicon:before { display: block; width: 16px; height: 16px; line-height: 16px; vertical-align: 0; text-align: center; }
