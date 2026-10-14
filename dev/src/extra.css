@@ -231,3 +231,20 @@ html[data-at-theme] .conv-info .btn-group button i:before { vertical-align: 0; }
   html[data-at-theme] .thread-body .at-mail pre, html[data-at-theme] .thread-body .at-mail code { background: transparent !important; border: 1px solid #ccc !important; color: #000 !important; }
   html[data-at-theme] .thread-body > .at-notice, html[data-at-theme] .thread-body > .alert { background: #fff !important; color: #000 !important; border: 1px solid #999 !important; }
 }
+
+/* ---- phones: the bell next to the menu button sits on the same centre line ---- */
+@media (max-width: 767px) {
+  html[data-at-theme] .navbar-header .web-notifications { top: 0; }
+  html[data-at-theme] .navbar-header .web-notifications > a { display: flex; align-items: center; height: 50px; box-sizing: border-box; padding-top: 0; padding-bottom: 0; line-height: 1; }
+  html[data-at-theme] .navbar-header .web-notifications > a .glyphicon { top: 0; display: inline-flex; align-items: center; }
+  html[data-at-theme] .navbar-header .web-notifications > a .glyphicon:before { vertical-align: 0; }
+}
+
+/* ---- phones: do not waste width around the message ---- */
+@media (max-width: 767px) {
+  html[data-at-theme="dark"] .thread-body .at-mail { padding: 10px 8px; border-radius: 10px; margin-top: 14px; }
+}
+
+/* ---- sender's logo used as the avatar (Settings > Atelier) ---- */
+html[data-at-theme] .at-from { display: none !important; }
+html[data-at-theme] img.at-fav { object-fit: contain; padding: 20%; box-sizing: border-box; background-color: #fff !important; border-radius: 50%; border: 1px solid var(--at-line); }

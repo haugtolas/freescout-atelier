@@ -18,6 +18,7 @@
 - **Per-mailbox accent colours** (optional), with a switch to keep the global accent inside mailboxes if you prefer.
 - **Fine line icons** replacing the stock glyphs (optional).
 - **Readable e-mails in dark mode**, with the original rendering one click away.
+- **Sender logos as avatars** for customers without a photo (optional; the server fetches each logo once and sends only the domain name).
 - **Light and dark logos**, live preview, import / export of the settings.
 - **Responsive**: designed for desktop and phone.
 - **Built-in updater** (Settings > Atelier), with automatic backup and rollback.

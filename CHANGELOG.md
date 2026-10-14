@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.5
+
+- New: the sender's logo is used as the avatar of customers who have no photo (like Canary Mail). The server fetches it once from a public logo service, keeps it 30 days and only sends the domain name. Personal addresses (Gmail, Outlook...) are skipped. Can be turned off in Settings > Atelier.
+- Phones: the notification bell is on the same centre line as the menu button.
+- E-mail readability: text on gradients or pictures is no longer recoloured by mistake, faint text is brought to a safer contrast, the dark "adapted" filter is less flat, and the frame around a message is tighter on phones.
+- Safari: the page repaints after the theme flips (system switching to light at sunrise, back/forward cache), which could leave parts of the top bar in the old theme.
+
 ## 1.5.4
 
 - Assign / Status buttons: the label is no longer clipped at the bottom (descenders such as "q" were cut) and has more room before it is shortened with an ellipsis.

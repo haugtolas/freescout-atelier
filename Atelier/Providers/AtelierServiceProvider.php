@@ -79,6 +79,7 @@ class AtelierServiceProvider extends ServiceProvider
                     .'<meta name="atelier-density" content="'.e(self::opt('density_default', 'comfortable')).'">'."\n"
                     .'<meta name="atelier-icons" content="'.(self::opt('icons_modern', '1') === '1' ? '1' : '0').'">'."\n"
                     .'<meta name="atelier-logo-auto" content="'.((!self::logoPath('light') && !self::logoPath('dark') && self::opt('logo_keep', '0') !== '1') ? '1' : '0').'">'."\n"
+                    .(self::opt('sender_logos', '1') === '1' ? '<meta name="atelier-logos" content="'.e(route('atelier.favicon', ['domain' => 'example.com'])).'">'."\n" : '')
                     .'<meta name="atelier-hide-toggle" content="'.(self::opt('hide_other_toggle', '1') === '1' ? '1' : '0').'">'."\n"
                     .($mbx ? '<meta name="atelier-mbx-map" content="'.e(json_encode(array_map(['Modules\\Atelier\\Http\\Controllers\\AtelierController', 'accentToken'], $mbx))).'">'."\n"
                         .'<meta name="atelier-mbx" content="'.(int)self::currentMailboxId().'">'."\n" : '')
@@ -91,6 +92,21 @@ class AtelierServiceProvider extends ServiceProvider
                 self::fail($e);
             }
         });
+
+        // Marks each customer message with the domain of its sender (the script shows that domain's logo as the avatar)
+        \Eventy::addAction('thread.after_person_action', function ($thread) {
+            try {
+                if (self::opt('sender_logos', '1') !== '1' || $thread->type != \App\Thread::TYPE_CUSTOMER || !$thread->customer_cached) {
+                    return;
+                }
+                $d = self::senderDomain($thread->customer_cached->getMainEmail());
+                if ($d !== '') {
+                    echo '<span class="at-from" data-at-domain="'.e($d).'" hidden></span>';
+                }
+            } catch (\Throwable $e) {
+                self::fail($e);
+            }
+        }, 20, 5);
 
         // Logo of the top bar: light-theme logo, else dark-theme logo, else FreeScout's / Customization module's own
         \Eventy::addFilter('layout.header_logo', function ($url) {
@@ -125,6 +141,37 @@ class AtelierServiceProvider extends ServiceProvider
             \Log::error('Atelier: '.$e->getMessage().' ('.basename($e->getFile()).':'.$e->getLine().')');
         } catch (\Throwable $ignored) {
         }
+    }
+
+    /** Personal mailbox providers: their logo says nothing about the person, so no logo is looked up */
+    public static $freemail = ['gmail.com', 'googlemail.com', 'outlook.com', 'outlook.fr', 'hotmail.com', 'hotmail.fr', 'hotmail.it', 'hotmail.co.uk', 'live.com', 'live.fr', 'msn.com', 'yahoo.com', 'yahoo.fr', 'yahoo.co.uk', 'ymail.com', 'icloud.com', 'me.com', 'mac.com', 'aol.com', 'orange.fr', 'wanadoo.fr', 'free.fr', 'sfr.fr', 'neuf.fr', 'laposte.net', 'bbox.fr', 'numericable.fr', 'club-internet.fr', 'online.fr', 'gmx.com', 'gmx.de', 'gmx.fr', 'gmx.net', 'web.de', 't-online.de', 'libero.it', 'proton.me', 'protonmail.com', 'pm.me', 'hey.com', 'fastmail.com', 'zoho.com', 'tutanota.com', 'mail.com', 'yandex.com', 'yandex.ru', 'qq.com', '163.com', '126.com', 'skynet.be', 'btinternet.com', 'comcast.net', 'verizon.net', 'att.net', 'sbcglobal.net'];
+
+    /** Two-part public suffixes, so that "mail.shop.co.uk" becomes "shop.co.uk" */
+    public static $suffix2 = ['co.uk', 'org.uk', 'ac.uk', 'gov.uk', 'com.au', 'net.au', 'org.au', 'co.nz', 'co.jp', 'co.kr', 'co.in', 'co.za', 'com.br', 'com.mx', 'com.ar', 'com.tr', 'com.cn', 'com.hk', 'com.sg', 'com.tw', 'com.pl', 'com.es'];
+
+    /** Domain whose logo stands for an e-mail address ("" when none: personal provider, invalid address) */
+    public static function senderDomain($email)
+    {
+        $email = strtolower(trim((string)$email));
+        $at = strrpos($email, '@');
+        if ($at === false) {
+            return '';
+        }
+        $d = trim(substr($email, $at + 1), ". \t>");
+        if (!self::validDomain($d)) {
+            return '';
+        }
+        $parts = explode('.', $d);
+        $keep = (count($parts) > 2 && in_array(implode('.', array_slice($parts, -2)), self::$suffix2, true)) ? 3 : 2;
+        if (count($parts) > $keep) {
+            $d = implode('.', array_slice($parts, -$keep));
+        }
+        return in_array($d, self::$freemail, true) ? '' : $d;
+    }
+
+    public static function validDomain($d)
+    {
+        return (bool)preg_match('/^(?=.{4,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,24}$/', (string)$d);
     }
 
     public static function opt($key, $default)

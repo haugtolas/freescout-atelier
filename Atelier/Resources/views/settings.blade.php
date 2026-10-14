@@ -134,6 +134,13 @@
     </div>
 
     <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-2">
+            <label class="checkbox-inline"><input type="checkbox" name="sender_logos" value="1" @if ($opt('sender_logos', '1') === '1') checked @endif> {{ __("Show the sender's logo as the avatar of customers without a photo") }}</label>
+            <p class="form-help">{{ __("Uses the logo of the sender's company website (personal addresses such as Gmail are skipped). The server fetches it once from a public logo service and keeps it for 30 days; only the domain name is sent, never the message.") }}</p>
+        </div>
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-2 control-label">{{ __('E-mail display') }}</label>
         <div class="col-sm-6">
             <select name="mail_default" class="form-control input-sized-lg">

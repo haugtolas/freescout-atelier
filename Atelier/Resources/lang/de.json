@@ -90,5 +90,7 @@
   "Update now": "Jetzt aktualisieren",
   "Release notes": "Versionshinweise",
   "Check now": "Jetzt prüfen",
-  "The module folder is not writable: update it by hand.": "Der Modulordner ist nicht beschreibbar: bitte manuell aktualisieren."
+  "The module folder is not writable: update it by hand.": "Der Modulordner ist nicht beschreibbar: bitte manuell aktualisieren.",
+  "Show the sender's logo as the avatar of customers without a photo": "Logo des Absenders als Avatar für Kunden ohne Foto anzeigen",
+  "Uses the logo of the sender's company website (personal addresses such as Gmail are skipped). The server fetches it once from a public logo service and keeps it for 30 days; only the domain name is sent, never the message.": "Verwendet das Logo der Firmenwebsite des Absenders (private Adressen wie Gmail werden übersprungen). Der Server lädt es einmal von einem öffentlichen Logodienst und behält es 30 Tage; nur der Domainname wird gesendet, nie die Nachricht."
 }

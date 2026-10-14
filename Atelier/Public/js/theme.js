@@ -50,12 +50,24 @@
 
     /* printing: always light (white paper, least ink), whatever the screen theme. The print view of a conversation
        (?print=1) is light from the start; the browser's Print command flips the page just for the print job. */
-    var printing = false;
+    var printing = false, lastDark = null;
+    /* Safari can leave parts of the page painted with the previous theme after the theme flips (the system switching
+       at sunrise, a page restored from the back/forward cache): a short opacity change makes it repaint everything */
+    function repaint() {
+        var b = document.body;
+        if (!b) { return; }
+        b.style.setProperty('opacity', '0.995');
+        void b.offsetHeight;
+        var done = function () { b.style.removeProperty('opacity'); };
+        if (window.requestAnimationFrame) { requestAnimationFrame(function () { requestAnimationFrame(done); }); } else { setTimeout(done, 50); }
+    }
     function printMode() { return printing || /[?&]print=/.test(location.search || ''); }
     function apply() {
         var m = themeMode();
         var dark = !printMode() && (m === 'dark' || (m === 'auto' && mq && mq.matches));
         root.setAttribute('data-at-theme', dark ? 'dark' : 'light');
+        if (lastDark !== null && lastDark !== dark) { repaint(); }
+        lastDark = dark;
         root.setAttribute('data-at-mail', mailMode());
         root.setAttribute('data-at-palette', palMode());
         root.setAttribute('data-at-density', denMode());
@@ -138,6 +150,7 @@
 
     apply();
     if (mq && mq.addEventListener) { mq.addEventListener('change', apply); }
+    window.addEventListener('pageshow', function (e) { if (e.persisted) { apply(); repaint(); } });
     (function () {
         function on() { if (!printing) { printing = true; apply(); } }
         function off() { if (printing) { printing = false; apply(); } }
@@ -364,8 +377,10 @@
     function blend(fg, bg, a) { return { r: fg.r * a + bg.r * (1 - a), g: fg.g * a + bg.g * (1 - a), b: fg.b * a + bg.b * (1 - a) }; }
     function backdrop(el) {
         for (var n = el; n && n.nodeType === 1; n = n.parentElement) {
-            var c = rgbOf(getComputedStyle(n).backgroundColor);
+            var st = getComputedStyle(n), c = rgbOf(st.backgroundColor);
             if (c && c.a > 0.5) { return c; }
+            /* text on a gradient / picture: its real backdrop is unknown, leave the author's colours alone */
+            if (st.backgroundImage && st.backgroundImage !== 'none') { return null; }
             if (n === document.documentElement) { break; }
         }
         return { r: 255, g: 255, b: 255, a: 1 };
@@ -378,13 +393,15 @@
     function fixMailEl(el, root) {
         var cs = getComputedStyle(el), c = rgbOf(cs.color);
         if (!c) { return; }
-        var bg = backdrop(el), op = chainOpacity(el, root.parentElement) * (c.a === undefined ? 1 : c.a);
+        var bg = backdrop(el);
+        if (!bg) { return; }
+        var op = chainOpacity(el, root.parentElement) * (c.a === undefined ? 1 : c.a);
         var eff = blend(c, bg, op);
-        if (ratio(eff, bg) >= 4.5) { return; }
+        if (ratio(eff, bg) >= 5.5) { return; } /* the dark "adapted" filter flattens contrast a little: keep a margin over 4.5 */
         var dark = lumOf(bg) > 0.4, tgt = dark ? 0 : 255, out = null;
         for (var k = 1; k >= 0; k -= 0.05) {
             var t = { r: c.r * k + tgt * (1 - k), g: c.g * k + tgt * (1 - k), b: c.b * k + tgt * (1 - k) };
-            if (ratio(t, bg) >= 7) { out = t; break; }
+            if (ratio(t, bg) >= 8) { out = t; break; }
         }
         if (!out) { out = { r: tgt, g: tgt, b: tgt }; }
         el.style.setProperty('color', 'rgb(' + Math.round(out.r) + ',' + Math.round(out.g) + ',' + Math.round(out.b) + ')', 'important');
@@ -457,7 +474,49 @@
         }
     }
 
+    /* ---- sender's logo as the avatar of a customer who has no photo (like Canary Mail) ----
+       The server marks each customer message with its sender's domain (span.at-from) and serves the logo (it fetches it once
+       and keeps it); only the default silhouette is replaced, a real photo never is. No logo: the silhouette stays. */
+    var logoTried = {};
+    function putLogo(box, dom, base) {
+        var img = box.querySelector('img');
+        if (!img || box.getAttribute('data-at-fav') || !/default-avatar/.test(img.getAttribute('src') || '')) { return; }
+        var url = base.split('example.com').join(dom);
+        var probe = logoTried[dom] || (logoTried[dom] = new Promise(function (ok) {
+            var t = new Image();
+            t.onload = function () { ok(t.naturalWidth >= 16); };
+            t.onerror = function () { ok(false); };
+            t.src = url;
+        }));
+        probe.then(function (good) {
+            if (!good || box.getAttribute('data-at-fav')) { return; }
+            box.setAttribute('data-at-fav', '1');
+            img.setAttribute('data-at-orig', img.getAttribute('src'));
+            img.removeAttribute('srcset');
+            img.src = url;
+            img.classList.add('at-fav');
+        });
+    }
+    function senderLogos() {
+        var base = meta('atelier-logos', '');
+        if (!base) { return; }
+        var threads = document.querySelectorAll('.thread-type-customer:not([data-at-logo])'), first = null, i;
+        for (i = 0; i < threads.length; i++) {
+            var th = threads[i], mk = th.querySelector('.at-from'), box = th.querySelector('.thread-photo');
+            th.setAttribute('data-at-logo', '1');
+            if (!mk) { continue; }
+            var dom = mk.getAttribute('data-at-domain');
+            if (!first) { first = dom; }
+            if (box && dom) { putLogo(box, dom, base); }
+        }
+        /* the customer card on the right: the conversation's customer writes the first message */
+        if (!first) { var any = document.querySelector('.thread-type-customer .at-from'); first = any && any.getAttribute('data-at-domain'); }
+        var side = document.querySelectorAll('.conv-customer-block .customer-photo-container:not([data-at-logo])');
+        for (i = 0; i < side.length && first; i++) { side[i].setAttribute('data-at-logo', '1'); putLogo(side[i], first, base); }
+    }
+
     function scan() {
+        senderLogos();
         centreButtons();
         mbxCards();
         scanInk();

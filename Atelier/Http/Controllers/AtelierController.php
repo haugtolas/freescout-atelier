@@ -197,6 +197,91 @@ class AtelierController extends Controller
         return implode(',', $sel).'{-webkit-filter:'.$filter.' !important;filter:'.$filter.' !important}'."\n";
     }
 
+    /** Logo of a sender's domain, fetched once by the server (agents' browsers never contact the logo service) and kept 30 days */
+    public function favicon($domain)
+    {
+        $domain = strtolower($domain);
+        if (P::opt('sender_logos', '1') !== '1' || !P::validDomain($domain) || P::senderDomain('x@'.$domain) !== $domain) {
+            abort(404);
+        }
+        $dir = storage_path('app/atelier-favicons');
+        $key = md5($domain);
+        $hit = $dir.'/'.$key.'.img';
+        $miss = $dir.'/'.$key.'.miss';
+        $headers = function ($type) {
+            return [
+                'Content-Type'            => $type,
+                'Cache-Control'           => 'private, max-age=604800',
+                'Content-Security-Policy' => "default-src 'none'; sandbox",
+                'X-Content-Type-Options'  => 'nosniff',
+            ];
+        };
+        $gone = function () {
+            return response('', 404, ['Cache-Control' => 'private, max-age=86400']);
+        };
+        $type = function ($bytes) {
+            $i = @getimagesizefromstring($bytes);
+            return ($i && $i[0] >= 16 && in_array($i['mime'], ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/x-icon', 'image/vnd.microsoft.icon'], true)) ? $i['mime'] : null;
+        };
+        if (is_file($hit) && filemtime($hit) > time() - 30 * 86400) {
+            $bytes = @file_get_contents($hit);
+            $t = $bytes === false ? null : $type($bytes);
+            if ($t) {
+                return response($bytes, 200, $headers($t));
+            }
+        }
+        if (is_file($miss) && filemtime($miss) > time() - 7 * 86400) {
+            return $gone();
+        }
+        $sources = [
+            'https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE&size=64&url='.rawurlencode('https://'.$domain),
+            'https://icons.duckduckgo.com/ip3/'.$domain.'.ico',
+        ];
+        $bytes = null;
+        $t = null;
+        foreach ($sources as $url) {
+            $b = self::fetchSmall($url);
+            if ($b !== null && ($t = $type($b))) {
+                $bytes = $b;
+                break;
+            }
+        }
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0775, true);
+        }
+        if ($bytes !== null) {
+            @file_put_contents($hit, $bytes);
+            return response($bytes, 200, $headers($t));
+        }
+        @file_put_contents($miss, '1');
+        return $gone();
+    }
+
+    /** GET of a small file (200 KB max, 4 s); null on any problem */
+    protected static function fetchSmall($url)
+    {
+        if (!function_exists('curl_init')) {
+            return null;
+        }
+        $buf = '';
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_TIMEOUT         => 4,
+            CURLOPT_CONNECTTIMEOUT  => 3,
+            CURLOPT_FOLLOWLOCATION  => false,
+            CURLOPT_USERAGENT       => 'Atelier-FreeScout',
+            CURLOPT_PROTOCOLS       => CURLPROTO_HTTPS,
+            CURLOPT_WRITEFUNCTION   => function ($c, $data) use (&$buf) {
+                $buf .= $data;
+                return strlen($buf) > 204800 ? 0 : strlen($data);
+            },
+        ]);
+        $ok = curl_exec($ch);
+        $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return ($ok !== false && $code === 200 && $buf !== '') ? $buf : null;
+    }
+
     public function logo($variant)
     {
         $path = P::logoPath($variant);
@@ -226,6 +311,7 @@ class AtelierController extends Controller
         \Option::set('atelier.density_default', $density);
         \Option::set('atelier.icons_modern', $request->input('icons_modern') ? '1' : '0');
         \Option::set('atelier.hide_other_toggle', $request->input('hide_other_toggle') ? '1' : '0');
+        \Option::set('atelier.sender_logos', $request->input('sender_logos') ? '1' : '0');
         \Option::set('atelier.logo_keep', $request->input('logo_keep') ? '1' : '0');
         \Option::set('atelier.theme_default', $theme);
         \Option::set('atelier.mail_default', $mail);
@@ -292,7 +378,7 @@ class AtelierController extends Controller
     /** One file with everything: options, mailbox accents (by e-mail, so they survive another installation), both logos. */
     public function export()
     {
-        $keys = ['theme_default', 'mail_default', 'palette_default', 'density_default', 'icons_modern', 'hide_other_toggle', 'logo_keep', 'accent4', 'mbx_recolor', 'extra_css'];
+        $keys = ['theme_default', 'mail_default', 'palette_default', 'density_default', 'icons_modern', 'hide_other_toggle', 'sender_logos', 'logo_keep', 'accent4', 'mbx_recolor', 'extra_css'];
         $options = [];
         foreach ($keys as $k) {
             $ov = \Option::get('atelier.'.$k, '');
@@ -353,6 +439,7 @@ class AtelierController extends Controller
         \Option::set('atelier.accent4', self::normAccent(isset($o['accent4']) ? $o['accent4'] : '') ?: 'azur');
         \Option::set('atelier.icons_modern', $flag('icons_modern', '1'));
         \Option::set('atelier.hide_other_toggle', $flag('hide_other_toggle', '1'));
+        \Option::set('atelier.sender_logos', $flag('sender_logos', '1'));
         \Option::set('atelier.logo_keep', $flag('logo_keep', '0'));
         \Option::set('atelier.mbx_recolor', $flag('mbx_recolor', '0'));
         \Option::set('atelier.extra_css', self::cleanCss(isset($o['extra_css']) ? (string)$o['extra_css'] : ''));
