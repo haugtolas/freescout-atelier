@@ -609,6 +609,21 @@
         } catch (e) {}
     }
 
+    /* the other module's dark class is removed in the same tick it appears, before the browser paints (no flash of its dark blocks while a page loads) */
+    (function () {
+        try {
+            cleanNode(root);
+            if (!window.MutationObserver) { return; }
+            var bodySeen = false;
+            var fast = new MutationObserver(function () {
+                cleanNode(root); cleanNode(document.body);
+                if (document.body && !bodySeen) { bodySeen = true; fast.observe(document.body, { attributes: true, attributeFilter: ['class'] }); }
+            });
+            fast.observe(root, { attributes: true, attributeFilter: ['class'], childList: true });
+            if (document.body) { bodySeen = true; fast.observe(document.body, { attributes: true, attributeFilter: ['class'] }); }
+        } catch (e) {}
+    })();
+
     /* ---- contrast guard (light theme): a dark panel or pale text left behind by another module on a light page ---- */
     var lightTimer = null;
     var LSKIP = '.navbar, .navbar *, img, svg, video, canvas, iframe, script, style, pre, code, .at-mail, .at-mail *, .note-editable, .note-editable *, .at-mail-toggle, .tooltip, .tooltip *, .popover, .popover *, .modal-backdrop, .featherlight, .featherlight *, .btn, .btn *, .label, .badge, .progress, .progress *, .navbar-toggle, .navbar-toggle *, .select2-selection__choice, .alert, .alert *, .caret, input, textarea, select, option, .conv-fader, .at-keep, .at-keep *';

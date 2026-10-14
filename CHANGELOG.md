@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.7
+
+- Page loads (light theme): the class another dark-mode module puts on the page is now removed the instant it appears, before the browser paints, so its black blocks no longer flash in the top bar while a page loads. The menu items and their lists also keep a transparent background whatever a module's CSS says.
+- Home: the cog (mailbox settings) is centred like the envelope and the arrow. Its button sits in an extra wrapper in FreeScout's markup, which the previous fix did not reach.
+- Users: the administrator badge keeps equal distance from the top and right edges, clear of the rounded corner.
+
 ## 1.5.6
 
 - Light theme: another dark-mode module that switches on a bare `dm` class (rules such as `.dm .navbar-default`) could leave parts of the top bar dark. Atelier now removes that class and those rules, keeps the menu items and their lists transparent, and the light-theme guard no longer touches the top bar.

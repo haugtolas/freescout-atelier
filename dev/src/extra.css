@@ -252,7 +252,16 @@ html[data-at-theme] img.at-fav { object-fit: contain; padding: 20%; box-sizing: 
 /* ---- top bar: only the bar itself and the links are painted; a module's rule must not turn the menu items or their lists dark ---- */
 html[data-at-theme] .navbar-default .navbar-nav, html[data-at-theme] .navbar-default .navbar-nav > li, html[data-at-theme] .navbar-default .navbar-header { background: transparent !important; background-image: none !important; }
 
-/* ---- home cards: icons in the three-button strip sit on the exact middle of the button, whatever the browser's baseline rules ---- */
-html[data-at-theme] .dash-card .btn-group-justified > .btn { vertical-align: middle; }
-html[data-at-theme] .dash-card .btn-group-justified > .btn > i.glyphicon { top: 0 !important; display: block; width: 16px; height: 16px; margin: 0 auto; line-height: 16px !important; }
-html[data-at-theme] .dash-card .btn-group-justified > .btn > i.glyphicon:before { display: block; width: 16px; height: 16px; line-height: 16px; vertical-align: 0; text-align: center; }
+/* ---- home cards: icons in the three-button strip sit on the exact middle of the button, whatever the browser's baseline rules.
+   The cog's button lives in one more wrapper (.btn-group.dropdown) than the other two, hence the two selectors. ---- */
+html[data-at-theme] .dash-card .btn-group-justified > .btn, html[data-at-theme] .dash-card .btn-group-justified > .btn-group { vertical-align: middle; }
+html[data-at-theme] .dash-card .btn-group-justified > .btn-group > .btn { display: flex; align-items: center; justify-content: center; height: 100%; min-height: 36px; box-sizing: border-box; padding-top: 0; padding-bottom: 0; }
+html[data-at-theme] .dash-card .btn-group-justified .btn > i.glyphicon { top: 0 !important; display: block; flex: none; width: 16px; height: 16px; margin: 0 auto; line-height: 16px !important; }
+html[data-at-theme] .dash-card .btn-group-justified .btn > i.glyphicon:before { display: block; width: 16px; height: 16px; line-height: 16px; vertical-align: 0; text-align: center; }
+
+/* ---- users page: the admin badge keeps the same distance from the top and right edges, clear of the rounded corner ---- */
+html[data-at-theme] .card > .user-admin-badge { top: 13px; right: 13px; width: 14px; height: 14px; line-height: 14px; display: block; }
+html[data-at-theme] .card > .user-admin-badge:before { display: block; line-height: 14px; vertical-align: 0; }
+
+/* ---- top bar: menu items and their lists never take a module's background (fixed against any specificity) ---- */
+html[data-at-theme] .navbar-default:not(#at-x) .navbar-nav:not(#at-x), html[data-at-theme] .navbar-default:not(#at-x) .navbar-nav:not(#at-x) > li:not(.open):not(.active):not(#at-x), html[data-at-theme] .navbar-default:not(#at-x) .navbar-nav:not(#at-x) > li:not(.open):not(.active):not(#at-x) > a:not(:hover):not(:focus):not(#at-x) { background-color: transparent !important; background-image: none !important; }

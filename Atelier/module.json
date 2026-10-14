@@ -3,7 +3,7 @@
     "alias": "atelier",
     "description": "Atelier: a modern light & dark theme for FreeScout. Neutral palettes, any accent colour (also per mailbox), fine line icons, readable e-mails in dark mode, light and dark logos, live preview, import / export and one-click updates from GitHub.",
     "img": "https://raw.githubusercontent.com/haugtolas/freescout-atelier/main/Atelier/Public/img/icon.png",
-    "version": "1.5.6",
+    "version": "1.5.7",
     "detailsUrl": "https://github.com/haugtolas/freescout-atelier",
     "author": "Atelier contributors",
     "authorUrl": "https://github.com/haugtolas",
