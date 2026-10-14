@@ -1,0 +1,7 @@
+{
+    "name": "atelier/freescout-atelier",
+    "description": "Atelier: light / dark theme for FreeScout",
+    "license": "AGPL-3.0-only",
+    "extra": { "laravel": { "providers": ["Modules\\Atelier\\Providers\\AtelierServiceProvider"], "aliases": {} } },
+    "autoload": { "psr-4": { "Modules\\Atelier\\": "" } }
+}

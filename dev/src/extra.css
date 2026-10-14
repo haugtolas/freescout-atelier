@@ -1,0 +1,232 @@
+/* ================= Atelier v4: finishing touches, fixes, safety nets ================= */
+html[data-at-theme] body { font-size: 14px; }
+html[data-at-density="compact"] body { font-size: 13px; }
+html[data-at-density="compact"] .dropdown-menu > li > a { padding-top: 4px; padding-bottom: 4px; }
+html[data-at-theme] .content, html[data-at-theme] .content-2col, html[data-at-theme] .content-full { background: transparent; }
+html[data-at-theme] .navbar-default { box-shadow: none; }
+
+/* top bar: brand text (when the brand is text) and icon follow the theme */
+html[data-at-theme] .navbar-brand-with-text span, html[data-at-theme] .navbar-brand i { color: var(--at-text) !important; }
+html[data-at-theme] a.navbar-brand:hover, html[data-at-theme] a.navbar-brand:focus { background: transparent !important; }
+
+/* sidebar: FreeScout paints a coloured square behind the active item's icon. No square: only the row is tinted. */
+html[data-at-theme] .sidebar-menu .active .glyphicon,
+html[data-at-theme] .sidebar-menu > li.active > a .glyphicon,
+html[data-at-theme="dark"] .sidebar-menu .active .glyphicon,
+html[data-at-theme="light"] .sidebar-menu .active .glyphicon { background: transparent !important; background-color: transparent !important; }
+html[data-at-theme] .sidebar-menu .active a,
+html[data-at-theme="dark"] .sidebar-menu .active a,
+html[data-at-theme="light"] .sidebar-menu .active a,
+html[data-at-theme] .sidebar-menu .active .glyphicon { color: var(--at-link) !important; font-weight: 600; }
+html[data-at-theme] .sidebar-menu .active a { background: var(--at-soft) !important; }
+html[data-at-theme] .sidebar-menu > li > a { border-radius: 10px; margin: 0 8px; padding-left: 42px; padding-right: 12px; }
+html[data-at-theme] .sidebar-menu > li > a .glyphicon, html[data-at-theme] .sidebar-menu .glyphicon { left: 12px; }
+html[data-at-theme] .sidebar-menu > li:hover, html[data-at-theme] .sidebar-menu > li.active:hover { background: transparent; }
+html[data-at-theme] .sidebar-menu-noicons > li > a { padding-left: 12px; }
+html[data-at-theme] .sidebar-menu > li.menu-padded > a { padding-left: 30px; }
+
+/* mailbox cards (home): one calm block, no separator lines */
+html[data-at-theme] .dash-card { border-radius: 16px; transition: transform .18s ease, box-shadow .18s ease; }
+html[data-at-theme] .dash-card:hover { transform: translateY(-2px); box-shadow: var(--at-shadow-lg); }
+html[data-at-theme] .dash-card h3, html[data-at-theme] .dash-card-link { border: 0 !important; border-bottom: 0 !important; box-shadow: none !important; }
+html[data-at-theme] .dash-card-link, html[data-at-theme] .dash-card-link a { color: var(--at-muted); }
+html[data-at-theme] .dash-card-list-item { border-radius: 8px; margin: 0 8px; padding-left: 12px; padding-right: 12px; }
+html[data-at-theme] .dash-card a.dash-card-list-item, html[data-at-theme] .dash-card .waiting-since { color: var(--at-muted); }
+
+/* lists */
+html[data-at-theme] .table-conversations .conv-row:hover, html[data-at-theme] .conv-row:hover { background: var(--at-hover); }
+html[data-at-theme] .table-conversations td a { color: var(--at-text); }
+html[data-at-theme] .table.table-conversations tbody td { border-bottom-color: var(--at-line); }
+html[data-at-theme] .conv-active, html[data-at-theme] .table-conversations .conv-active td, html[data-at-theme] .table.table-conversations tbody .conv-active { background: var(--at-soft); }
+
+html[data-at-theme] .table-conversations .conv-fader, html[data-at-theme] .table-conversations .conv-active .conv-fader { background: none !important; }
+html[data-at-theme] .heading { color: var(--at-text); }
+html[data-at-theme] .help-link, html[data-at-theme] .help-link:hover, html[data-at-theme] .help-link:focus { color: var(--at-muted) !important; }
+html[data-at-theme] .dash-card-list a:nth-of-type(1) strong.has-value { background: var(--at-muted); color: var(--at-surface); }
+html[data-at-theme] .table-conversations .conv-active td { background: transparent; }
+
+/* focus */
+html[data-at-theme] a:focus-visible, html[data-at-theme] button:focus-visible, html[data-at-theme] .btn:focus-visible { outline: 2px solid var(--at-accent); outline-offset: 2px; box-shadow: none; }
+
+/* soft transitions on interactive things only */
+html[data-at-theme] .btn, html[data-at-theme] .dropdown-menu > li > a, html[data-at-theme] .sidebar-menu > li > a, html[data-at-theme] .form-control { transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease; }
+
+/* badges / counters */
+html[data-at-theme] .badge { background: var(--at-raised); color: var(--at-muted); font-weight: 600; }
+
+/* right-hand boxes of the conversation (third-party modules): safe defaults */
+html[data-at-theme] .conv-sidebar-block, html[data-at-theme] .conv-customer-block, html[data-at-theme] #conv-layout-customer { color: var(--at-text); }
+html[data-at-theme] .conv-sidebar-block .panel-heading, html[data-at-theme] .conv-sidebar-block h4, html[data-at-theme] .conv-sidebar-block .sidebar-block-header { color: var(--at-text); }
+
+/* hide the other dark-mode module's switch and mark ours */
+html[data-at-theme] .at-hidden { display: none !important; }
+
+
+/* ---- logo / banner: artwork colour detected by theme.js (data-at-ink) ---- */
+html[data-at-theme="light"] body a.navbar-brand img[data-at-ink="dark"],html[data-at-theme="light"] body a.navbar-brand:hover img[data-at-ink="dark"],html[data-at-theme="light"] body a.navbar-brand:focus img[data-at-ink="dark"],html[data-at-theme="light"] body a.navbar-brand.active img[data-at-ink="dark"],html[data-at-theme="light"] body a.navbar-brand img[data-at-ink="color"],html[data-at-theme="light"] body a.navbar-brand:hover img[data-at-ink="color"],html[data-at-theme="light"] body a.navbar-brand:focus img[data-at-ink="color"],html[data-at-theme="light"] body a.navbar-brand.active img[data-at-ink="color"]{-webkit-filter:none !important;filter:none !important}
+html[data-at-theme="dark"] body a.navbar-brand img[data-at-ink="dark"],html[data-at-theme="dark"] body a.navbar-brand:hover img[data-at-ink="dark"],html[data-at-theme="dark"] body a.navbar-brand:focus img[data-at-ink="dark"],html[data-at-theme="dark"] body a.navbar-brand.active img[data-at-ink="dark"]{-webkit-filter:invert(1) hue-rotate(180deg) !important;filter:invert(1) hue-rotate(180deg) !important}
+html[data-at-theme="dark"] body a.navbar-brand img[data-at-ink="light"],html[data-at-theme="dark"] body a.navbar-brand:hover img[data-at-ink="light"],html[data-at-theme="dark"] body a.navbar-brand:focus img[data-at-ink="light"],html[data-at-theme="dark"] body a.navbar-brand.active img[data-at-ink="light"],html[data-at-theme="dark"] body a.navbar-brand img[data-at-ink="color"],html[data-at-theme="dark"] body a.navbar-brand:hover img[data-at-ink="color"],html[data-at-theme="dark"] body a.navbar-brand:focus img[data-at-ink="color"],html[data-at-theme="dark"] body a.navbar-brand.active img[data-at-ink="color"]{-webkit-filter:none !important;filter:none !important}
+html[data-at-theme="dark"] .banner img[data-at-ink="dark"], html[data-at-theme="light"] .banner img[data-at-ink="light"] { -webkit-filter: invert(1) hue-rotate(180deg); filter: invert(1) hue-rotate(180deg); }
+
+/* ---- native form controls follow the accent ---- */
+html[data-at-theme] input[type="checkbox"], html[data-at-theme] input[type="radio"], html[data-at-theme] input[type="range"], html[data-at-theme] progress { accent-color: var(--at-accent); }
+
+/* ---- login page ---- */
+html[data-at-theme] body.user-is-guest { background: var(--at-page); }
+html[data-at-theme] .user-is-guest .banner { text-align: center; margin: 34px 0 26px; }
+html[data-at-theme] .user-is-guest .panel { border-radius: 20px; border: 1px solid var(--at-line); box-shadow: var(--at-shadow-lg); background: var(--at-surface); overflow: hidden; }
+html[data-at-theme] .user-is-guest .panel-body { padding: 34px 20px 26px; }
+html[data-at-theme] .user-is-guest .form-group { margin-bottom: 18px; }
+html[data-at-theme] .user-is-guest .form-control { height: 44px; border-radius: 10px; padding: 8px 14px; font-size: 15px; }
+html[data-at-theme] .user-is-guest .control-label { font-weight: 500; color: var(--at-muted); }
+html[data-at-theme] .user-is-guest .checkbox { color: var(--at-muted); }
+html[data-at-theme] .user-is-guest .btn-primary { height: auto; line-height: 1.4; padding: 10px 26px; font-weight: 600; border-radius: 10px; font-size: 15px; }
+html[data-at-theme] .user-is-guest .btn-link { color: var(--at-link); }
+/* captcha widgets draw their own frame: never clip them */
+html[data-at-theme] .user-is-guest .cf-turnstile, html[data-at-theme] .user-is-guest .g-recaptcha { display: block; max-width: 100%; overflow: visible; border-radius: 0; margin: 2px 0; }
+html[data-at-theme] .user-is-guest .cf-turnstile iframe, html[data-at-theme] .user-is-guest .g-recaptcha iframe { display: block; max-width: 100%; }
+html[data-at-theme] .user-is-guest .footer { margin-top: 26px; color: var(--at-faint); }
+html[data-at-theme] .user-is-guest .has-error .form-control { border-color: #d64545; box-shadow: 0 0 0 3px rgba(214,69,69,.14); }
+html[data-at-theme] .user-is-guest .has-error .help-block { color: #d64545; }
+html[data-at-theme="dark"] .user-is-guest .has-error .help-block { color: #ff8a8a; }
+
+
+/* ---- mobile / small screens: explicit rules so nothing depends on the phone's own light / dark setting ---- */
+html[data-at-theme], html[data-at-theme] body { background-color: var(--at-page); }
+html[data-at-theme] .navbar-default .navbar-toggle, html[data-at-theme] .navbar-default .navbar-toggle:hover, html[data-at-theme] .navbar-default .navbar-toggle:focus, html[data-at-theme] .navbar-default .navbar-toggle.collapsed { background: transparent !important; border-color: transparent !important; border-radius: 8px; }
+html[data-at-theme] .navbar-default .navbar-toggle .icon-bar, html[data-at-theme] .navbar-default .navbar-toggle.collapsed .icon-bar, html[data-at-theme] .navbar-default .navbar-toggle.collapsed:hover .icon-bar, html[data-at-theme] .navbar-default .navbar-toggle:hover .icon-bar { background-color: var(--at-text) !important; }
+@media (max-width: 767px) {
+  html[data-at-theme] .navbar-default .navbar-collapse, html[data-at-theme] .navbar-collapse { background-color: var(--at-nav) !important; border-color: var(--at-line) !important; box-shadow: none !important; }
+  html[data-at-theme] .navbar-default .navbar-nav > li > a, html[data-at-theme] .navbar-default .navbar-nav > .open > a, html[data-at-theme] .navbar-default .navbar-nav > .open > a:hover, html[data-at-theme] .navbar-default .navbar-nav > .open > a:focus { color: var(--at-text) !important; background: transparent; }
+  html[data-at-theme] .navbar-default .navbar-nav > .active > a { color: var(--at-link) !important; background: var(--at-soft); }
+  html[data-at-theme] .navbar-default .navbar-nav .open .dropdown-menu { background: transparent !important; border: 0 !important; box-shadow: none !important; }
+  html[data-at-theme] .navbar-default .navbar-nav .open .dropdown-menu > li > a { color: var(--at-muted) !important; }
+  html[data-at-theme] .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, html[data-at-theme] .navbar-default .navbar-nav .open .dropdown-menu > .active > a { color: var(--at-text) !important; background: var(--at-hover); }
+  html[data-at-theme] .navbar-nav .glyphicon, html[data-at-theme] .navbar-default .navbar-nav .caret { color: var(--at-muted); }
+  html[data-at-theme] .navbar-default .navbar-form { border-color: var(--at-line); box-shadow: none; }
+  html[data-at-theme] .form-nav-search { width: auto; }
+}
+
+
+/* ---- shield: another dark-mode module (or the phone) must not repaint the page behind a theme the user chose ---- */
+html[data-at-theme]:not(#at-x), html[data-at-theme] body:not(#at-x), html[data-at-theme] #app:not(#at-x), html[data-at-theme] .content:not(#at-x), html[data-at-theme] .content-2col:not(#at-x), html[data-at-theme] .content-full:not(#at-x), html[data-at-theme] .container:not(#at-x) { background-color: var(--at-page) !important; color: var(--at-text) !important; }
+html[data-at-theme] .heading:not(#at-x), html[data-at-theme] .section-heading-noborder:not(#at-x) { color: var(--at-text) !important; }
+
+
+/* ---- conversation: names and message blocks stay fully readable whatever a module or the phone does ---- */
+html[data-at-theme] .thread:not(#at-x), html[data-at-theme] .thread-message:not(#at-x), html[data-at-theme] .thread-body:not(#at-x), html[data-at-theme] .thread-header:not(#at-x) { opacity: 1 !important; }
+html[data-at-theme] .thread-person:not(#at-x), html[data-at-theme] .thread-person strong:not(#at-x), html[data-at-theme] .thread-person strong a:not(#at-x) { color: var(--at-text) !important; }
+html[data-at-theme] .thread-body:not(#at-x) { color: var(--at-text); }
+
+/* palette picker in the theme menu */
+html[data-at-theme] .dropdown-menu > li.at-pal { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 16px 8px; max-width: 250px; }
+html[data-at-theme] .dropdown-menu > li.at-pal > a { display: block; width: 26px; height: 26px; border-radius: 50%; border: 2px solid transparent; padding: 0; margin: 0; background: transparent; }
+html[data-at-theme] .dropdown-menu > li.at-pal > a:hover, html[data-at-theme] .dropdown-menu > li.at-pal > a:focus { background: transparent; border-color: var(--at-line-2); }
+html[data-at-theme] .dropdown-menu > li.at-pal > a.at-sel { border-color: var(--at-accent); }
+.at-pal-sw { display: block; width: 100%; height: 100%; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(128,128,128,.35); }
+.at-pal [data-at-pal="graphite"] .at-pal-sw { background: linear-gradient(135deg, #f1f2f4 50%, #1b1d21 50%); }
+.at-pal [data-at-pal="ardoise"] .at-pal-sw { background: linear-gradient(135deg, #eef1f5 50%, #1c2127 50%); }
+.at-pal [data-at-pal="minuit"] .at-pal-sw { background: linear-gradient(135deg, #eff1f7 50%, #151a2b 50%); }
+.at-pal [data-at-pal="foret"] .at-pal-sw { background: linear-gradient(135deg, #eff3f0 50%, #181e1b 50%); }
+.at-pal [data-at-pal="sable"] .at-pal-sw { background: linear-gradient(135deg, #f4f0e8 50%, #211e1a 50%); }
+
+/* contrast guard: elements flipped by theme.js */
+html[data-at-theme="dark"] [data-at-fix] { border-color: var(--at-line) !important; }
+@media (prefers-reduced-motion: reduce) { html[data-at-theme] * { transition: none !important; animation: none !important; } html[data-at-theme] .dash-card:hover { transform: none; } }
+
+
+/* ---- 1.2.7: Atelier owns the colour scheme; neither the phone nor another module may repaint a page behind it ---- */
+html[data-at-theme="light"]:not(#at-x) { color-scheme: light !important; }
+html[data-at-theme="dark"]:not(#at-x) { color-scheme: dark !important; }
+html[data-at-theme] .layout-2col:not(#at-x), html[data-at-theme] .content-2col:not(#at-x) { background-color: var(--at-page) !important; }
+html[data-at-theme] .sidebar-2col:not(#at-x) { background-color: var(--at-surface) !important; }
+html[data-at-theme] .empty-content i:not(#at-x), html[data-at-theme] .empty-content p:not(#at-x) { color: var(--at-faint) !important; }
+html[data-at-theme] .conv-subjtext:not(#at-x), html[data-at-theme] .conv-subjtext *:not(#at-x) { color: var(--at-text) !important; }
+html[data-at-theme] .conv-subject:not(#at-x), html[data-at-theme] .conv-top-block:not(#at-x), html[data-at-theme] .conv-block:not(#at-x), html[data-at-theme] .conv-block .conv-top-block:not(#at-x) { opacity: 1 !important; }
+html[data-at-theme] .dash-card:not(#at-x) { background-color: var(--at-surface) !important; opacity: 1 !important; }
+html[data-at-theme] .dash-card h3:not(#at-x), html[data-at-theme] .dash-card-link:not(#at-x) { background-color: var(--at-raised) !important; }
+html[data-at-theme] .dash-card h3:not(#at-x), html[data-at-theme] .dash-card h3 a:not(#at-x), html[data-at-theme] .dash-card-content h3 a:not(#at-x) { color: var(--at-text) !important; opacity: 1 !important; }
+html[data-at-theme] .dash-card-link a:not(#at-x), html[data-at-theme] .dash-card .help-link:not(#at-x) { color: var(--at-muted) !important; opacity: 1 !important; }
+html[data-at-theme] .dash-card a.dash-card-list-item:not(#at-x) { color: var(--at-muted) !important; opacity: 1 !important; }
+html[data-at-theme] .dash-card a.dash-card-list-item:not(#at-x):nth-of-type(-n+2):not(.dash-card-item-empty), html[data-at-theme] .dash-card a.dash-card-list-item:not(#at-x):nth-of-type(-n+2):not(.dash-card-item-empty) strong:not(.has-value) { color: var(--at-text) !important; }
+html[data-at-theme] .dash-card a.dash-card-list-item.dash-card-item-empty:not(#at-x) { color: var(--at-faint) !important; }
+html[data-at-theme] .dash-card a.dash-card-list-item:not(#at-x):hover { color: var(--at-link) !important; }
+html[data-at-theme] .sidebar-title-real:not(#at-x), html[data-at-theme] .sidebar-title-extra-value:not(#at-x) { color: var(--at-text) !important; }
+html[data-at-theme] .sidebar-title-email:not(#at-x) { color: var(--at-muted) !important; }
+html[data-at-theme] .table-conversations:not(#at-x), html[data-at-theme] .conv-list:not(#at-x) { background-color: transparent !important; }
+html[data-at-theme] .conv-row .conv-subject:not(#at-x), html[data-at-theme] .conv-row .conv-customer-name:not(#at-x), html[data-at-theme] .conv-row .conv-title:not(#at-x) { opacity: 1 !important; }
+html[data-at-theme] .thread-body .at-mail:not(#at-x) { opacity: 1 !important; }
+
+/* ---- 1.2.8: toolbar icons (cog, envelope) were pushed 3px low by the font-icon offset of core; centre them ---- */
+html[data-at-theme]:not([data-at-icons="off"]) .sidebar-buttons .btn i.glyphicon { top: -1.5px !important; vertical-align: middle; }
+html[data-at-theme]:not([data-at-icons="off"]) .sidebar-buttons .btn .caret { vertical-align: middle; position: relative; top: -1.5px; margin-left: 3px; }
+html[data-at-theme]:not([data-at-icons="off"]) .sidebar-buttons .btn { line-height: 34px; padding: 0 4px; height: 36px; white-space: nowrap; }
+
+/* ---- 1.3: per-mailbox accent (dashboard card marker, sidebar title dot); the colours themselves come from vars.css ---- */
+html[data-at-theme] .dash-card[data-at-mbx-accent] h3 a.mailbox-name::before, html[data-at-theme][data-at-mbx-accent] .sidebar-title-real::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--at-dot, var(--at-accent)); box-shadow: 0 0 0 3px var(--at-mbx-soft, transparent); margin-right: 10px; vertical-align: 1px; }
+/* card header tinted with the mailbox colour (soft, see-through), plus the dot next to the name */
+html[data-at-theme] .dash-card[data-at-mbx-accent] h3:not(#at-x), html[data-at-theme] .dash-card[data-at-mbx-accent] .dash-card-link:not(#at-x) { background-image: linear-gradient(var(--at-mbx-soft), var(--at-mbx-soft)) !important; }
+html[data-at-theme] .dash-card[data-at-mbx-accent] .dash-card-list-item:hover { background: var(--at-mbx-soft, var(--at-soft)); }
+
+/* ---- 1.4.1: icon + label buttons are centred exactly (marked by theme.js) ---- */
+html[data-at-theme] .btn[data-at-cb="1"]:not(#at-x) { display: inline-flex !important; align-items: center; justify-content: center; gap: .4em; padding-top: 0 !important; padding-bottom: 0 !important; line-height: 1.2 !important; vertical-align: middle; box-sizing: border-box; }
+html[data-at-theme] .btn.btn-block[data-at-cb="1"]:not(#at-x) { display: flex !important; }
+html[data-at-theme] .btn[data-at-cb="1"] > i, html[data-at-theme] .btn[data-at-cb="1"] > svg { margin: 0 !important; top: 0 !important; }
+
+/* 1.4.3 blocked-images notice lifted above the message */
+html[data-at-theme] .thread-body > .at-notice:not(#at-x) { margin: 0 0 12px !important; }
+html[data-at-theme="dark"] .thread-body > .at-notice:not(#at-x) { background: rgba(245,158,11,.14) !important; color: #f4d58d !important; border: 1px solid rgba(245,158,11,.35) !important; border-radius: 10px; }
+html[data-at-theme="dark"] .thread-body > .at-notice:not(#at-x) a { color: #ffd98a !important; }
+
+/* 1.4.3 menu icons: centred on the row whatever its height (FreeScout fixes them at top:10px). The icon is inside the link
+   in mailbox menus and a sibling of the link in the Settings menu: both cases. */
+html[data-at-theme] .sidebar-menu > li { position: relative; }
+html[data-at-theme] .sidebar-menu > li > a { position: relative; }
+html[data-at-theme] .sidebar-menu > li > .glyphicon, html[data-at-theme] .sidebar-menu > li > a > .glyphicon { top: 50% !important; margin-top: 0 !important; transform: translateY(-50%) !important; line-height: 1 !important; height: 18px !important; width: 18px; display: inline-flex !important; align-items: center; justify-content: center; }
+html[data-at-theme] .sidebar-menu > li > a { padding-top: 10px !important; padding-bottom: 10px !important; }
+
+/* ---- top bar, right side: icons, avatar and name share one centre line ----
+   FreeScout nudges glyphicons down by 3px for its own icon font and gives the user
+   block a different height than the icon buttons; Atelier's line icons need neither. */
+@media (min-width: 768px) {
+  html[data-at-theme] .navbar-default .navbar-right > li > a {
+    display: flex; align-items: center; height: 50px; box-sizing: border-box;
+    padding-top: 0; padding-bottom: 0; line-height: 1;
+  }
+  html[data-at-theme] .navbar-nav .dropdown-toggle .glyphicon { top: 0; }
+  html[data-at-theme] .navbar-right > li > a .photo-sm { display: inline-flex; align-items: center; }
+  html[data-at-theme] .navbar-right > li > a .caret { margin-left: 5px; position: relative; top: 1px; }
+  /* centre the name on its capital letters instead of its line box: the result no longer depends on the font's ascent/descent (SF Pro on Mac, Segoe UI, Roboto...) */
+  @supports (text-box: trim-both cap alphabetic) {
+    html[data-at-theme] .navbar-right > li > a .nav-user { text-box: trim-both cap alphabetic; position: relative; top: 1px; }
+  }
+}
+
+
+/* ---- conversation: assignee / status buttons (icon, label and caret on one centre line) ---- */
+html[data-at-theme] .conv-info .btn-group > button.btn { display: inline-flex; align-items: center; justify-content: center; height: 30px; padding-top: 0; padding-bottom: 0; line-height: 1; vertical-align: middle; }
+html[data-at-theme] .conv-info .btn-group button i { top: 0; }
+html[data-at-theme] .conv-info .btn-group button.conv-info-val { padding-right: 12px; }
+html[data-at-theme] .conv-info .btn-group button.conv-info-val > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+html[data-at-theme] .conv-info .btn-group button.conv-info-val .caret { position: static; flex: none; margin-left: 7px; }
+html[data-at-theme] .conv-info .btn-group button i { display: inline-flex; align-items: center; justify-content: center; }
+html[data-at-theme] .conv-info .btn-group button i:before { vertical-align: 0; }
+@supports (text-box: trim-both cap alphabetic) {
+  html[data-at-theme] .conv-info .btn-group button.conv-info-val > span:first-child { text-box: trim-both cap alphabetic; }
+}
+
+/* ---- printing: white paper, black ink, nothing decorative (the script also flips the page to the light theme) ---- */
+@media print {
+  html[data-at-theme]:not(#at-x):not(#at-y), html[data-at-theme] body:not(#at-x):not(#at-y) { background: #fff !important; color: #000 !important; }
+  html[data-at-theme] body * { box-shadow: none !important; text-shadow: none !important; }
+  html[data-at-theme] .at-mail-bar, html[data-at-theme] .at-theme-li, html[data-at-theme] .thread-options { display: none !important; }
+  html[data-at-theme] .thread, html[data-at-theme] .print .thread, html[data-at-theme] .thread-message, html[data-at-theme] .thread-header, html[data-at-theme] .thread-body, html[data-at-theme] .conv-block, html[data-at-theme] #conv-layout-main, html[data-at-theme] #conv-layout-customer, html[data-at-theme] #conv-subject, html[data-at-theme] .conv-subjwrap, html[data-at-theme] .conv-sidebar-block, html[data-at-theme] .conv-customer-header, html[data-at-theme] .content, html[data-at-theme] .content-2col, html[data-at-theme] .sidebar-2col, html[data-at-theme] .layout-2col, html[data-at-theme] .navbar { background: #fff !important; background-image: none !important; }
+  html[data-at-theme] body:not(#at-x):not(#at-y) :where(div, section, main, aside, header, footer, nav, ul, ol, li, table, thead, tbody, tr, td, th, form, .panel) { background-color: #fff !important; background-image: none !important; }
+  html[data-at-theme] .thread-body .at-mail { filter: none !important; background: #fff !important; color: #000 !important; padding: 0 !important; margin: 0 !important; border-radius: 0 !important; }
+  html[data-at-theme] .thread-body .at-mail * { background-color: transparent !important; }
+  html[data-at-theme] .thread-body .at-mail :where(p, div, span, td, th, li, h1, h2, h3, h4, h5, h6, strong, em, b, i, font, small, center, blockquote) { color: #000 !important; }
+  html[data-at-theme] .thread-body .at-mail a { color: #000 !important; text-decoration: underline; }
+  html[data-at-theme] .thread-body .at-mail blockquote { border-left-color: #999 !important; }
+  html[data-at-theme] .thread-body .at-mail pre, html[data-at-theme] .thread-body .at-mail code { background: transparent !important; border: 1px solid #ccc !important; color: #000 !important; }
+  html[data-at-theme] .thread-body > .at-notice, html[data-at-theme] .thread-body > .alert { background: #fff !important; color: #000 !important; border: 1px solid #999 !important; }
+}

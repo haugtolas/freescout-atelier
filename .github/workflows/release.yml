@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check tag matches module.json
+        run: |
+          V=$(python3 -c "import json;print(json.load(open('Atelier/module.json'))['version'])")
+          [ "v$V" = "${GITHUB_REF_NAME}" ] || { echo "Tag ${GITHUB_REF_NAME} does not match module.json version $V"; exit 1; }
+          python3 -c "import json;m=json.load(open('Atelier/module.json'));assert 'OWNER' not in json.dumps(m), 'OWNER placeholder still in module.json'"
+
+      - name: Check CSS is up to date
+        run: |
+          cp Atelier/Public/css/atelier.css /tmp/before.css
+          python3 dev/assemble.py
+          cmp Atelier/Public/css/atelier.css /tmp/before.css
+
+      - name: Build Atelier.zip
+        run: |
+          zip -r -X Atelier.zip Atelier -x '*.DS_Store' -x '*.bak'
+          unzip -l Atelier.zip | head -20
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Atelier.zip
+          generate_release_notes: true
