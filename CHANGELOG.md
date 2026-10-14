@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.4
+
+- Assign / Status buttons: the label is no longer clipped at the bottom (descenders such as "q" were cut) and has more room before it is shortened with an ellipsis.
+- Printing: links no longer print their address after the text, which broke HTML e-mails (image links turned into columns of letters).
+
 ## 1.5.3
 
 - Neutral author and copyright lines; screenshots use only fictitious names and example.com addresses.

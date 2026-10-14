@@ -1972,8 +1972,8 @@ html[data-at-theme] .navbar-right > li > a .nav-user { text-box: trim-both cap a
 
 html[data-at-theme] .conv-info .btn-group > button.btn { display: inline-flex; align-items: center; justify-content: center; height: 30px; padding-top: 0; padding-bottom: 0; line-height: 1; vertical-align: middle; }
 html[data-at-theme] .conv-info .btn-group button i { top: 0; }
-html[data-at-theme] .conv-info .btn-group button.conv-info-val { padding-right: 12px; }
-html[data-at-theme] .conv-info .btn-group button.conv-info-val > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+html[data-at-theme] .conv-info .btn-group button.conv-info-val { padding-right: 12px; max-width: 150px; }
+html[data-at-theme] .conv-info .btn-group button.conv-info-val > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; padding: .35em 0; margin: -.35em 0; }
 html[data-at-theme] .conv-info .btn-group button.conv-info-val .caret { position: static; flex: none; margin-left: 7px; }
 html[data-at-theme] .conv-info .btn-group button i { display: inline-flex; align-items: center; justify-content: center; }
 html[data-at-theme] .conv-info .btn-group button i:before { vertical-align: 0; }
@@ -1991,6 +1991,7 @@ html[data-at-theme] body:not(#at-x):not(#at-y) :where(div, section, main, aside,
 html[data-at-theme] .thread-body .at-mail { filter: none !important; background: #fff !important; color: #000 !important; padding: 0 !important; margin: 0 !important; border-radius: 0 !important; }
 html[data-at-theme] .thread-body .at-mail * { background-color: transparent !important; }
 html[data-at-theme] .thread-body .at-mail :where(p, div, span, td, th, li, h1, h2, h3, h4, h5, h6, strong, em, b, i, font, small, center, blockquote) { color: #000 !important; }
+html[data-at-theme] a[href]:after, html[data-at-theme] abbr[title]:after { content: none !important; }
 html[data-at-theme] .thread-body .at-mail a { color: #000 !important; text-decoration: underline; }
 html[data-at-theme] .thread-body .at-mail blockquote { border-left-color: #999 !important; }
 html[data-at-theme] .thread-body .at-mail pre, html[data-at-theme] .thread-body .at-mail code { background: transparent !important; border: 1px solid #ccc !important; color: #000 !important; }
