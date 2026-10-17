@@ -92,5 +92,14 @@
   "Check now": "Comprobar ahora",
   "The module folder is not writable: update it by hand.": "La carpeta del módulo no es escribible: actualízala a mano.",
   "Show the sender's logo as the avatar of customers without a photo": "Mostrar el logotipo del remitente como avatar de los clientes sin foto",
-  "Uses the logo of the sender's company website (personal addresses such as Gmail are skipped). The server fetches it once from a public logo service and keeps it for 30 days; only the domain name is sent, never the message.": "Usa el logotipo del sitio web de la empresa del remitente (se omiten las direcciones personales como Gmail). El servidor lo obtiene una vez de un servicio público de logotipos y lo guarda 30 días; solo se envía el nombre de dominio, nunca el mensaje."
+  "Uses the logo of the sender's company website (personal addresses such as Gmail are skipped). The server fetches it once from a public logo service and keeps it for 30 days; only the domain name is sent, never the message.": "Usa el logotipo del sitio web de la empresa del remitente (se omiten las direcciones personales como Gmail). El servidor lo obtiene una vez de un servicio público de logotipos y lo guarda 30 días; solo se envía el nombre de dominio, nunca el mensaje.",
+  "Announcements from Atelier (news, a request for feedback)": "Anuncios de Atelier (novedades, petición de opinión)",
+  "A small card shown to administrators only, once per announcement, never on a conversation or on a phone, and at most one every few days. Once a day the server reads a public file (news.json) from the Atelier repository on GitHub: only that file is downloaded, nothing about your helpdesk is sent, and GitHub sees the server's address like for any download. Untick to download and show nothing.": "Una pequeña tarjeta solo para administradores, una vez por anuncio, nunca en una conversación ni en el móvil y como mucho una cada pocos días. Una vez al día el servidor lee un archivo público (news.json) del repositorio de Atelier en GitHub: solo se descarga ese archivo, no se envía nada de su helpdesk y GitHub ve la dirección del servidor como en cualquier descarga. Desmarque para no descargar ni mostrar nada.",
+  "Latest announcements": "Últimos anuncios",
+  "Read more": "Saber más",
+  "Close": "Cerrar",
+  "Turn off announcements": "Desactivar los anuncios",
+  "Atelier news": "Novedades de Atelier",
+  "Your opinion": "Su opinión",
+  "Give feedback": "Dar mi opinión"
 }

@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "id": "1.6.0",
+      "kind": "news",
+      "date": "2026-10-17",
+      "title": {
+        "fr": "Atelier peut maintenant vous tenir au courant",
+        "en": "Atelier can now keep you posted",
+        "de": "Atelier kann Sie jetzt auf dem Laufenden halten",
+        "es": "Atelier ahora puede mantenerle al día",
+        "it": "Atelier ora può tenervi aggiornati"
+      },
+      "body": {
+        "fr": "Une petite carte, une seule fois par annonce et jamais sur une conversation, pour les nouveautés ou une demande d'avis. Une fois par jour, le serveur lit un fichier public sur GitHub ; rien de votre helpdesk n'est envoyé. À désactiver dans Réglages > Atelier.",
+        "en": "A small card, shown once per announcement and never on a conversation, for news or a request for feedback. Once a day the server reads a public file on GitHub; nothing from your helpdesk is sent. Turn it off in Settings > Atelier.",
+        "de": "Eine kleine Karte, nur einmal pro Mitteilung und nie in einer Konversation, für Neuigkeiten oder eine Bitte um Feedback. Einmal täglich liest der Server eine öffentliche Datei auf GitHub; nichts aus Ihrem Helpdesk wird gesendet. Abschaltbar unter Einstellungen > Atelier.",
+        "es": "Una pequeña tarjeta, una sola vez por anuncio y nunca en una conversación, para novedades o una petición de opinión. Una vez al día el servidor lee un archivo público en GitHub; no se envía nada de su helpdesk. Se desactiva en Ajustes > Atelier.",
+        "it": "Una piccola scheda, una sola volta per annuncio e mai in una conversazione, per novità o una richiesta di feedback. Una volta al giorno il server legge un file pubblico su GitHub; nulla del vostro helpdesk viene inviato. Si disattiva in Impostazioni > Atelier."
+      },
+      "url": "https://github.com/haugtolas/freescout-atelier/blob/main/CHANGELOG.md"
+    }
+  ]
+}

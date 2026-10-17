@@ -312,6 +312,7 @@ class AtelierController extends Controller
         \Option::set('atelier.icons_modern', $request->input('icons_modern') ? '1' : '0');
         \Option::set('atelier.hide_other_toggle', $request->input('hide_other_toggle') ? '1' : '0');
         \Option::set('atelier.sender_logos', $request->input('sender_logos') ? '1' : '0');
+        \Option::set('atelier.news', $request->input('news') ? '1' : '0');
         \Option::set('atelier.logo_keep', $request->input('logo_keep') ? '1' : '0');
         \Option::set('atelier.theme_default', $theme);
         \Option::set('atelier.mail_default', $mail);
@@ -378,7 +379,7 @@ class AtelierController extends Controller
     /** One file with everything: options, mailbox accents (by e-mail, so they survive another installation), both logos. */
     public function export()
     {
-        $keys = ['theme_default', 'mail_default', 'palette_default', 'density_default', 'icons_modern', 'hide_other_toggle', 'sender_logos', 'logo_keep', 'accent4', 'mbx_recolor', 'extra_css'];
+        $keys = ['theme_default', 'mail_default', 'palette_default', 'density_default', 'icons_modern', 'hide_other_toggle', 'sender_logos', 'news', 'logo_keep', 'accent4', 'mbx_recolor', 'extra_css'];
         $options = [];
         foreach ($keys as $k) {
             $ov = \Option::get('atelier.'.$k, '');
@@ -440,6 +441,7 @@ class AtelierController extends Controller
         \Option::set('atelier.icons_modern', $flag('icons_modern', '1'));
         \Option::set('atelier.hide_other_toggle', $flag('hide_other_toggle', '1'));
         \Option::set('atelier.sender_logos', $flag('sender_logos', '1'));
+        \Option::set('atelier.news', $flag('news', '1'));
         \Option::set('atelier.logo_keep', $flag('logo_keep', '0'));
         \Option::set('atelier.mbx_recolor', $flag('mbx_recolor', '0'));
         \Option::set('atelier.extra_css', self::cleanCss(isset($o['extra_css']) ? (string)$o['extra_css'] : ''));
@@ -502,6 +504,20 @@ class AtelierController extends Controller
             @unlink($path);
         }
         \Option::set('atelier.logo_'.$variant, '');
+    }
+
+    /** The announcement card was shown: remember it for this administrator so it is never shown again. */
+    public function newsSeen(Request $request)
+    {
+        try {
+            $u = \Auth::user();
+            if ($u) {
+                \Modules\Atelier\Services\News::markSeen($u->id, (string)$request->input('id'));
+            }
+        } catch (\Throwable $e) {
+            P::fail($e);
+        }
+        return response()->json(['ok' => true]);
     }
 
     /** Settings > Atelier > Updates: ask GitHub now. */

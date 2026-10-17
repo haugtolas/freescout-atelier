@@ -22,6 +22,7 @@
 - **Light and dark logos**, live preview, import / export of the settings.
 - **Responsive**: designed for desktop and phone.
 - **Built-in updater** (Settings > Atelier), with automatic backup and rollback.
+- **Quiet announcements** for administrators (news, a request for feedback). On by default, one small card per announcement, see [Privacy](#privacy).
 - Interface available in English, French, Spanish, German and Italian.
 
 <p align="center">
@@ -56,6 +57,13 @@ The first installation is always manual (steps above); every later version can b
 ## Settings
 
 <p align="center"><img src="docs/screenshots/settings.png" width="70%" alt="Settings"></p>
+
+## Privacy
+
+Atelier makes two kinds of outgoing requests, both from your server, both optional, and never sends anything about your helpdesk, your customers or your messages:
+
+- **Sender logos** (Settings > Atelier): the server asks a public logo service for the logo of a sender's website, keeps it 30 days, and sends only the domain name. Personal addresses (Gmail, Outlook...) are skipped.
+- **Announcements** (on by default; untick *Announcements from Atelier* to stop): once a day the server downloads one small public file, [`news.json`](news.json), from this repository. Nothing is sent with the request apart from what any download involves (GitHub sees your server's address). The result is shown to **administrators only**, as a small card in the corner of the page: once per announcement and per administrator, at most one every few days, never on a conversation, never on a phone, always as plain text. A link in an announcement can only point to this project on GitHub or to a survey service (Tally, Framaforms, Google Forms, Typeform...), and the destination is always shown on the card. With the setting off, nothing is downloaded and nothing is shown. The module's own update check is separate and is done by FreeScout.
 
 ## Mobile
 

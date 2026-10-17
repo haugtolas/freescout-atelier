@@ -92,5 +92,14 @@
   "Check now": "Jetzt prüfen",
   "The module folder is not writable: update it by hand.": "Der Modulordner ist nicht beschreibbar: bitte manuell aktualisieren.",
   "Show the sender's logo as the avatar of customers without a photo": "Logo des Absenders als Avatar für Kunden ohne Foto anzeigen",
-  "Uses the logo of the sender's company website (personal addresses such as Gmail are skipped). The server fetches it once from a public logo service and keeps it for 30 days; only the domain name is sent, never the message.": "Verwendet das Logo der Firmenwebsite des Absenders (private Adressen wie Gmail werden übersprungen). Der Server lädt es einmal von einem öffentlichen Logodienst und behält es 30 Tage; nur der Domainname wird gesendet, nie die Nachricht."
+  "Uses the logo of the sender's company website (personal addresses such as Gmail are skipped). The server fetches it once from a public logo service and keeps it for 30 days; only the domain name is sent, never the message.": "Verwendet das Logo der Firmenwebsite des Absenders (private Adressen wie Gmail werden übersprungen). Der Server lädt es einmal von einem öffentlichen Logodienst und behält es 30 Tage; nur der Domainname wird gesendet, nie die Nachricht.",
+  "Announcements from Atelier (news, a request for feedback)": "Mitteilungen von Atelier (Neuigkeiten, Bitte um Feedback)",
+  "A small card shown to administrators only, once per announcement, never on a conversation or on a phone, and at most one every few days. Once a day the server reads a public file (news.json) from the Atelier repository on GitHub: only that file is downloaded, nothing about your helpdesk is sent, and GitHub sees the server's address like for any download. Untick to download and show nothing.": "Eine kleine Karte nur für Administratoren, einmal pro Mitteilung, nie in einer Konversation oder auf dem Handy und höchstens eine alle paar Tage. Einmal täglich liest der Server eine öffentliche Datei (news.json) aus dem Atelier-Repository auf GitHub: nur diese Datei wird geladen, nichts aus Ihrem Helpdesk wird gesendet, und GitHub sieht die Adresse des Servers wie bei jedem Download. Abwählen, um nichts zu laden oder anzuzeigen.",
+  "Latest announcements": "Letzte Mitteilungen",
+  "Read more": "Mehr erfahren",
+  "Close": "Schließen",
+  "Turn off announcements": "Mitteilungen abschalten",
+  "Atelier news": "Atelier-Neuigkeiten",
+  "Your opinion": "Ihre Meinung",
+  "Give feedback": "Feedback geben"
 }

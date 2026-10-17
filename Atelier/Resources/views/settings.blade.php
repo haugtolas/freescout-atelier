@@ -141,6 +141,25 @@
     </div>
 
     <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-2">
+            <label class="checkbox-inline"><input type="checkbox" name="news" value="1" @if ($opt('news', '1') === '1') checked @endif> {{ __('Announcements from Atelier (news, a request for feedback)') }}</label>
+            <p class="form-help">{{ __('A small card shown to administrators only, once per announcement, never on a conversation or on a phone, and at most one every few days. Once a day the server reads a public file (news.json) from the Atelier repository on GitHub: only that file is downloaded, nothing about your helpdesk is sent, and GitHub sees the server\'s address like for any download. Untick to download and show nothing.') }}</p>
+            @php $newsRecent = ($opt('news', '1') === '1') ? \Modules\Atelier\Services\News::recent(5) : []; @endphp
+            @if (count($newsRecent))
+                <details class="at-news-list">
+                    <summary>{{ __('Latest announcements') }}</summary>
+                    @foreach ($newsRecent as $n)
+                        <div class="at-news-row"><strong>{{ $n['title'] }}</strong>@if ($n['date']) <span class="text-muted">&middot; {{ $n['date'] }}</span>@endif
+                            @if ($n['body'] !== '')<div class="text-muted">{{ $n['body'] }}</div>@endif
+                            @if ($n['url'] !== '')<a href="{{ $n['url'] }}" target="_blank" rel="noopener noreferrer">{{ __('Read more') }}</a>@endif
+                        </div>
+                    @endforeach
+                </details>
+            @endif
+        </div>
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-2 control-label">{{ __('E-mail display') }}</label>
         <div class="col-sm-6">
             <select name="mail_default" class="form-control input-sized-lg">
@@ -244,6 +263,7 @@
     <button type="button" class="btn btn-default btn-sm" id="at-pv-cancel">{{ __('Cancel preview') }}</button>
 </div>
 <style>
+    .at-news-list { margin-top: 8px; } .at-news-list summary { cursor: pointer; color: var(--at-link, #2b63d9); } .at-news-row { padding: 8px 0; border-top: 1px solid rgba(128,128,128,.28); margin-top: 6px; }
     .at-update { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--at-line-2, #ddd); background: var(--at-surface, #fff); max-width: 960px; }
     .at-update-new { border-color: var(--at-accent, #2b63d9); background: var(--at-soft, #eef3ff); }
     .at-update-actions { display: flex; gap: 8px; flex-wrap: wrap; }

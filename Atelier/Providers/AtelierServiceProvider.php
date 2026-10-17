@@ -67,13 +67,30 @@ class AtelierServiceProvider extends ServiceProvider
                     'minuit' => __('Midnight'),
                     'foret' => __('Forest'),
                     'sable' => __('Sand'),
+                    'newsMore' => __('Read more'),
+                    'newsClose' => __('Close'),
+                    'newsOff' => __('Turn off announcements'),
+                    'newsNews' => __('Atelier news'),
+                    'newsFeedback' => __('Your opinion'),
+                    'newsGive' => __('Give feedback'),
                 ];
                 $rev = (int)\Option::get('atelier.rev', 1);
                 $mbx = self::mailboxAccents();
                 $base = \Module::getPublicPath('atelier');
                 $css = @filemtime(__DIR__.'/../Public/css/atelier.css');
                 $js = @filemtime(__DIR__.'/../Public/js/theme.js');
-                $out = '<meta name="atelier-theme" content="'.e(self::opt('theme_default', 'auto')).'">'."\n"
+                $newsMeta = '';
+                $me = \Auth::user();
+                if ($me && $me->isAdmin() && \Modules\Atelier\Services\News::enabled()) {
+                    $it = \Modules\Atelier\Services\News::pending($me->id);
+                    if ($it) {
+                        $it['settings'] = route('settings', ['section' => 'atelier']);
+                        $it['seen'] = route('atelier.news.seen');
+                        $newsMeta = '<meta name="atelier-news" content="'.e(json_encode($it, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)).'">'."\n";
+                    }
+                    app()->terminating(function () { \Modules\Atelier\Services\News::refreshIfStale(); });
+                }
+                $out = $newsMeta.'<meta name="atelier-theme" content="'.e(self::opt('theme_default', 'auto')).'">'."\n"
                     .'<meta name="atelier-mail" content="'.e(self::opt('mail_default', 'adapted')).'">'."\n"
                     .'<meta name="atelier-palette" content="'.e(self::opt('palette_default', 'graphite')).'">'."\n"
                     .'<meta name="atelier-density" content="'.e(self::opt('density_default', 'comfortable')).'">'."\n"

@@ -92,5 +92,14 @@
   "Check now": "Vérifier maintenant",
   "The module folder is not writable: update it by hand.": "Le dossier du module n'est pas modifiable : mets-le à jour à la main.",
   "Show the sender's logo as the avatar of customers without a photo": "Afficher le logo de l'expéditeur comme avatar des clients sans photo",
-  "Uses the logo of the sender's company website (personal addresses such as Gmail are skipped). The server fetches it once from a public logo service and keeps it for 30 days; only the domain name is sent, never the message.": "Utilise le logo du site web de l'entreprise de l'expéditeur (les adresses personnelles comme Gmail sont ignorées). Le serveur le récupère une fois auprès d'un service public de logos et le garde 30 jours ; seul le nom de domaine est envoyé, jamais le message."
+  "Uses the logo of the sender's company website (personal addresses such as Gmail are skipped). The server fetches it once from a public logo service and keeps it for 30 days; only the domain name is sent, never the message.": "Utilise le logo du site web de l'entreprise de l'expéditeur (les adresses personnelles comme Gmail sont ignorées). Le serveur le récupère une fois auprès d'un service public de logos et le garde 30 jours ; seul le nom de domaine est envoyé, jamais le message.",
+  "Announcements from Atelier (news, a request for feedback)": "Annonces d'Atelier (nouveautés, demande d'avis)",
+  "A small card shown to administrators only, once per announcement, never on a conversation or on a phone, and at most one every few days. Once a day the server reads a public file (news.json) from the Atelier repository on GitHub: only that file is downloaded, nothing about your helpdesk is sent, and GitHub sees the server's address like for any download. Untick to download and show nothing.": "Une petite carte réservée aux administrateurs, une seule fois par annonce, jamais sur une conversation ni sur téléphone, et au plus une tous les quelques jours. Une fois par jour, le serveur lit un fichier public (news.json) du dépôt Atelier sur GitHub : seul ce fichier est téléchargé, rien de votre helpdesk n'est envoyé, et GitHub voit l'adresse du serveur comme pour tout téléchargement. Décochez pour ne rien télécharger ni afficher.",
+  "Latest announcements": "Dernières annonces",
+  "Read more": "En savoir plus",
+  "Close": "Fermer",
+  "Turn off announcements": "Désactiver les annonces",
+  "Atelier news": "Nouveautés Atelier",
+  "Your opinion": "Votre avis",
+  "Give feedback": "Donner mon avis"
 }

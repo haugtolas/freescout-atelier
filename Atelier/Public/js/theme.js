@@ -692,6 +692,58 @@
         if (root.getAttribute('data-at-theme') === 'light') { clearLight(); schedLight(); } else { schedGuard(); }
     }
 
+    /* ---- announcements: one small card, once per item, administrators only (the server decides who and what) ---- */
+    function news() {
+        try {
+            var raw = meta('atelier-news', '');
+            if (!raw || window.innerWidth < 768) { return; }
+            var it = JSON.parse(raw);
+            if (!it || !it.id || !it.title) { return; }
+            var tries = 0;
+            var show = function () {
+                /* never on a conversation, never over a dialog or while someone is typing */
+                if (document.getElementById('conv-layout') || document.querySelector('.at-news')) { return; }
+                var ae = document.activeElement;
+                if (document.querySelector('.modal.in, .modal.show') || (ae && /^(input|textarea|select)$/i.test(ae.tagName)) || (ae && ae.isContentEditable)) {
+                    if (++tries < 6) { setTimeout(show, 4000); }
+                    return;
+                }
+                var el = function (tag, cls, txt) { var n = document.createElement(tag); if (cls) { n.className = cls; } if (txt) { n.textContent = txt; } return n; };
+                var card = el('div', 'at-news');
+                card.setAttribute('role', 'status');
+                var head = el('div', 'at-news-head');
+                head.appendChild(el('span', 'at-news-kind', it.kind === 'feedback' ? (L.newsFeedback || 'Your opinion') : (L.newsNews || 'Atelier news')));
+                var x = el('button', 'at-news-x', '\u00d7');
+                x.type = 'button'; x.setAttribute('aria-label', L.newsClose || 'Close');
+                head.appendChild(x);
+                card.appendChild(head);
+                card.appendChild(el('div', 'at-news-title', it.title));
+                if (it.body) { card.appendChild(el('div', 'at-news-body', it.body)); }
+                var acts = el('div', 'at-news-acts');
+                if (it.url && /^https:\/\//.test(it.url)) {
+                    var more = el('a', 'at-news-more', it.kind === 'feedback' ? (L.newsGive || 'Give feedback') : (L.newsMore || 'Read more'));
+                    more.href = it.url; more.target = '_blank'; more.rel = 'noopener noreferrer';
+                    acts.appendChild(more);
+                    /* the destination is always shown, so nobody opens a link blindly */
+                    try { acts.appendChild(el('span', 'at-news-host', new URL(it.url).hostname.replace(/^www\./, ''))); } catch (e2) {}
+                }
+                if (it.settings) { var off = el('a', 'at-news-off', L.newsOff || 'Turn off announcements'); off.href = it.settings; acts.appendChild(off); }
+                card.appendChild(acts);
+                var close = function () { if (card.parentNode) { card.parentNode.removeChild(card); } document.removeEventListener('keydown', key); };
+                var key = function (e) { if (e.key === 'Escape') { close(); } };
+                x.addEventListener('click', close);
+                document.addEventListener('keydown', key);
+                document.body.appendChild(card);
+                /* shown once: remembered on the server for this administrator */
+                var tok = document.querySelector('meta[name="csrf-token"]');
+                if (it.seen && window.fetch) {
+                    fetch(it.seen, { method: 'POST', credentials: 'same-origin', headers: { 'X-CSRF-TOKEN': tok ? tok.content : '', 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'id=' + encodeURIComponent(it.id) }).catch(function () {});
+                }
+            };
+            setTimeout(show, 2500);
+        } catch (e) {}
+    }
+
     function init() {
         neutraliseScheme();
         stripForeign();
@@ -713,6 +765,7 @@
         addMenu();
         hideOtherToggle();
         scan();
+        news();
         schedGuard();
         schedLight();
         if (window.MutationObserver) {
