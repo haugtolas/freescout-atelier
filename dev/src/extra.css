@@ -21,16 +21,38 @@ html[data-at-theme] .sidebar-menu .active .glyphicon { color: var(--at-link) !im
 html[data-at-theme] .sidebar-menu .active a { background: var(--at-soft) !important; }
 html[data-at-theme] .sidebar-menu > li > a { border-radius: 10px; margin: 0 8px; padding-left: 42px; padding-right: 12px; }
 html[data-at-theme] .sidebar-menu > li > a .glyphicon, html[data-at-theme] .sidebar-menu .glyphicon { left: 12px; }
-html[data-at-theme] .sidebar-menu > li:hover, html[data-at-theme] .sidebar-menu > li.active:hover { background: transparent; }
+html[data-at-theme] .sidebar-menu > li:hover, html[data-at-theme] .sidebar-menu > li.active, html[data-at-theme] .sidebar-menu > li.active:hover { background: transparent !important; } /* only the rounded link is tinted, never the whole row behind it */
 html[data-at-theme] .sidebar-menu-noicons > li > a { padding-left: 12px; }
 html[data-at-theme] .sidebar-menu > li.menu-padded > a { padding-left: 30px; }
 
 /* mailbox cards (home): one calm block, no separator lines */
-html[data-at-theme] .dash-card { border-radius: 16px; transition: transform .18s ease, box-shadow .18s ease; }
+html[data-at-theme] .dash-card { --at-r: 16px; border-radius: var(--at-r); transition: transform .18s ease, box-shadow .18s ease; }
 html[data-at-theme] .dash-card:hover { transform: translateY(-2px); box-shadow: var(--at-shadow-lg); }
 html[data-at-theme] .dash-card h3, html[data-at-theme] .dash-card-link { border: 0 !important; border-bottom: 0 !important; box-shadow: none !important; }
 html[data-at-theme] .dash-card-link, html[data-at-theme] .dash-card-link a { color: var(--at-muted); }
 html[data-at-theme] .dash-card-list-item { border-radius: 8px; margin: 0 8px; padding-left: 12px; padding-right: 12px; }
+/* a row = label, optional "waiting since", counter: one line, the counter pinned to the right whatever the width.
+   (Floated, the counter dropped to its own line, or stuck to the text, as soon as the label got long.) */
+html[data-at-theme] .dash-card a.dash-card-list-item:not(#at-x) { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+html[data-at-theme] .dash-card a.dash-card-list-item .waiting-since:not(#at-x) { margin-left: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+html[data-at-theme] .dash-card a.dash-card-list-item strong:not(#at-x) { float: none; flex: 0 0 auto; margin: 0 0 0 auto !important; padding: 0 8px; } /* same inner gap as the pill, so all the digits line up */
+html[data-at-theme] .dash-card a.dash-card-list-item strong.has-value:not(#at-x) { margin: 0 0 0 auto !important; padding: 0 8px !important; min-width: 20px; line-height: 20px; border-radius: 10px; }
+/* concentric corners: whatever touches a rounded edge uses (outer radius - gap), so the curves stay parallel
+   and no square corner of a coloured band pokes out of the card */
+html[data-at-theme] .dash-card > .dash-card-content { border-radius: calc(var(--at-r) - var(--at-bw, 1px)); }
+html[data-at-theme] .panel, html[data-at-theme] .well, html[data-at-theme] .card { --at-r: var(--at-radius, 12px); }
+html[data-at-theme] .conv-sidebar-block .panel { --at-bw: 0px; }
+html[data-at-theme] .conv-sidebar-block { border-radius: var(--at-radius, 12px); }
+html[data-at-theme] .panel > .panel-heading { border-radius: calc(var(--at-r) - var(--at-bw, 1px)) calc(var(--at-r) - var(--at-bw, 1px)) 0 0; }
+html[data-at-theme] .panel > .panel-heading:last-child { border-radius: calc(var(--at-r) - var(--at-bw, 1px)); }
+html[data-at-theme] .panel > .panel-heading:has(+ .panel-collapse:not(.in)) { border-radius: calc(var(--at-r) - var(--at-bw, 1px)); }
+html[data-at-theme] .panel > .panel-footer:last-child { border-radius: 0 0 calc(var(--at-r) - var(--at-bw, 1px)) calc(var(--at-r) - var(--at-bw, 1px)); }
+html[data-at-theme] .dropdown-menu { --at-r: 14px; border-radius: var(--at-r); }
+html[data-at-theme] .dropdown-menu > li > a { border-radius: calc(var(--at-r) - 7px); }
+html[data-at-theme] .popover { --at-r: 12px; border-radius: var(--at-r); }
+html[data-at-theme] .popover-title { border-radius: calc(var(--at-r) - 1px) calc(var(--at-r) - 1px) 0 0; }
+html[data-at-theme] .note-editor.note-frame > .note-toolbar { border-radius: 9px 9px 0 0; }
+html[data-at-theme] .note-editor.note-frame > .note-statusbar { border-radius: 0 0 9px 9px; }
 html[data-at-theme] .dash-card a.dash-card-list-item, html[data-at-theme] .dash-card .waiting-since { color: var(--at-muted); }
 
 /* lists */
@@ -280,6 +302,60 @@ html[data-at-theme] input[type="date"]::-webkit-datetime-edit, html[data-at-them
 html[data-at-theme] input[type="date"]::-webkit-datetime-edit-fields-wrapper, html[data-at-theme] input[type="time"]::-webkit-datetime-edit-fields-wrapper, html[data-at-theme] input[type="month"]::-webkit-datetime-edit-fields-wrapper, html[data-at-theme] input[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper { padding: 0; }
 html[data-at-theme] input[type="date"]::-webkit-date-and-time-value, html[data-at-theme] input[type="time"]::-webkit-date-and-time-value, html[data-at-theme] input[type="month"]::-webkit-date-and-time-value, html[data-at-theme] input[type="datetime-local"]::-webkit-date-and-time-value { margin: 0; min-height: 1.3em; line-height: 1.3; text-align: left; }
 
+/* ---- one size scale for buttons and fields: height and corner radius grow together ----
+   xs 24 / 6px, sm 32 / 8px, normal 36 / 8px, lg 44 / 12px. A field next to a button of the same size now has the same height. */
+html[data-at-theme] .btn-xs { min-height: 24px; height: 24px; border-radius: 6px; }
+html[data-at-theme] .btn-sm, html[data-at-theme] .btn-group-sm > .btn { border-radius: 8px; }
+html[data-at-theme] input.input-sm, html[data-at-theme] select.input-sm, html[data-at-theme] .input-group-sm > .form-control { height: 32px; border-radius: 8px; }
+html[data-at-theme] .btn-lg, html[data-at-theme] .btn-group-lg > .btn { min-height: 44px; height: 44px; border-radius: 12px; }
+html[data-at-theme] input.input-lg, html[data-at-theme] select.input-lg { height: 44px; border-radius: 12px; }
+/* joined shapes keep the outer curve and are square where they touch */
+html[data-at-theme] .input-group-addon:first-child { border-radius: 8px 0 0 8px; }
+html[data-at-theme] .input-group-addon:last-child { border-radius: 0 8px 8px 0; }
+html[data-at-theme] .pagination > li:first-child > a, html[data-at-theme] .pagination > li:first-child > span { border-radius: 8px 0 0 8px; }
+html[data-at-theme] .pagination > li:last-child > a, html[data-at-theme] .pagination > li:last-child > span { border-radius: 0 8px 8px 0; }
+html[data-at-theme] .nav-pills > li > a { border-radius: 8px; }
+html[data-at-theme] .label { border-radius: 6px; }
+html[data-at-theme] .badge { border-radius: 999px; }
+/* drop-downs: the same shape in every browser. iOS and Safari draw their own pill otherwise. */
+html[data-at-theme] select.form-control:not([multiple]):not([size]) {
+  -webkit-appearance: none; appearance: none; padding-right: 28px; padding-top: 0; padding-bottom: 0; line-height: normal; text-overflow: ellipsis;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238a90a0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important; background-position: right 10px center !important; background-size: 10px 6px !important;
+}
+
+/* ---- notifications drop-down: the content is clipped by the rounded menu (inner corners follow the outer ones) ---- */
+html[data-at-theme] .web-notifications .dropdown-menu:not(#at-x):not(#at-y) { overflow: hidden; padding: 0 !important; } /* the header and the rows run edge to edge, the rounded menu clips them: no inset square bar inside a round frame */
+html[data-at-theme] .web-notifications-header:not(#at-x) { border-radius: 0; }
+
+/* ---- more concentric corners: anything flush with a rounded frame takes (frame radius - frame border) ---- */
+html[data-at-theme] .panel > :first-child:not(.panel-heading):not(.panel-collapse):not(.panel-footer):not(.collapse) { border-top-left-radius: calc(var(--at-r) - var(--at-bw, 1px)); border-top-right-radius: calc(var(--at-r) - var(--at-bw, 1px)); }
+html[data-at-theme] .panel > :last-child:not(.panel-heading):not(.panel-footer):not(.panel-collapse):not(.collapse),
+html[data-at-theme] .panel > .panel-collapse:last-child > :last-child:not(.panel-footer) { border-bottom-left-radius: calc(var(--at-r) - var(--at-bw, 1px)); border-bottom-right-radius: calc(var(--at-r) - var(--at-bw, 1px)); }
+html[data-at-theme] .modal-content { --at-r: 14px; --at-bw: 1px; border-radius: var(--at-r); }
+html[data-at-theme] .modal-content > .modal-header:first-child { border-radius: calc(var(--at-r) - var(--at-bw)) calc(var(--at-r) - var(--at-bw)) 0 0; }
+html[data-at-theme] .modal-content > .modal-footer:last-child { border-radius: 0 0 calc(var(--at-r) - var(--at-bw)) calc(var(--at-r) - var(--at-bw)); }
+html[data-at-theme] .note-editor.note-frame > .note-editing-area:last-child > .note-editable { border-radius: 0 0 9px 9px; }
+html[data-at-theme] .note-editor.note-frame > .note-editing-area:first-child > .note-editable { border-radius: 9px 9px 0 0; }
+html[data-at-theme] .note-editor.note-frame > .note-editing-area:only-child > .note-editable { border-radius: 9px; }
+/* a menu opened from the top bar floats a few pixels below it, so its four rounded corners are all free
+   (flush against the bar, the two top corners left little dark wedges) */
+@media (min-width: 768px) {
+  html[data-at-theme] .navbar-nav > li > .dropdown-menu:not(#at-x):not(#at-y) { margin-top: 6px; }
+}
+
+/* ---- editors (reply box, templates, signatures): HTML written for a white page stays readable in the dark theme ----
+   Same idea as the adapted mail view, display only: the HTML itself is never changed. In "paper" mode the area is simply white. */
+html[data-at-theme="dark"][data-at-mail="adapted"] .note-editor .note-editing-area .note-editable:not(#at-x) {
+  background: #ecedf1 !important; color: #1b1c1f !important; caret-color: #8a8a8a;
+  -webkit-filter: invert(1) hue-rotate(180deg); filter: invert(1) hue-rotate(180deg);
+}
+html[data-at-theme="dark"][data-at-mail="adapted"] .note-editor .note-editing-area .note-editable img:not(#at-x),
+html[data-at-theme="dark"][data-at-mail="adapted"] .note-editor .note-editing-area .note-editable video:not(#at-x) { -webkit-filter: invert(1) hue-rotate(180deg); filter: invert(1) hue-rotate(180deg); }
+/* a dark transparent logo (black on transparent) needs a light backing, otherwise it vanishes on the dark page: the image keeps its own colours */
+html[data-at-theme="dark"][data-at-mail="adapted"] .note-editor .note-editing-area .note-editable img:not(#at-x) { background-color: #fff; border-radius: 4px; }
+html[data-at-theme="dark"][data-at-mail="paper"] .note-editor .note-editing-area .note-editable:not(#at-x) { background: #fff !important; color: #111 !important; }
+
 /* ---- announcements (administrators): one small card in the corner, once per item, never on a conversation ---- */
 .at-news { position: fixed; right: 18px; bottom: 18px; z-index: 1030; width: 330px; max-width: calc(100vw - 36px); box-sizing: border-box; padding: 12px 16px 12px; border-radius: 14px; background: var(--at-surface, #fff); color: var(--at-text, #222); border: 1px solid var(--at-line-2, #ddd); box-shadow: var(--at-shadow-lg, 0 12px 32px rgba(0,0,0,.2)); font-size: 13px; line-height: 1.45; animation: at-news-in .35s ease both; }
 .at-news-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
@@ -297,3 +373,104 @@ html[data-at-theme] input[type="date"]::-webkit-date-and-time-value, html[data-a
 @media (max-width: 767px) { .at-news { display: none !important; } }
 @media (prefers-reduced-motion: reduce) { .at-news { animation: none; } }
 @media print { .at-news { display: none !important; } }
+
+/* ======================================================================================================
+   Liquid glass (optional, Settings > Atelier > Surfaces, or each agent from the top bar).
+   Translucent blurred surfaces over a soft background in the accent colour: top bar, cards, menus, dialogs.
+   Never on mail, conversation threads or lists. Every rule reads the --g-* tokens, so "reduced transparency"
+   and "more contrast" only have to redefine the tokens.
+   ====================================================================================================== */
+html[data-at-glass="on"][data-at-theme="light"] {
+  --g-bg: rgba(255, 255, 255, .56); --g-bg-strong: rgba(255, 255, 255, .74); --g-tint: rgba(255, 255, 255, .34);
+  --g-edge: rgba(255, 255, 255, .85); --g-line: rgba(28, 34, 60, .10); --g-hi: rgba(255, 255, 255, .95);
+  --g-shadow: 0 10px 34px rgba(30, 40, 90, .13), 0 1px 3px rgba(30, 40, 90, .08), 0 0 0 .5px rgba(60, 70, 120, .14);
+  --g-blur: blur(22px) saturate(1.8);
+  --g-menu: rgba(255, 255, 255, .97); --g-spec: rgba(255, 255, 255, .55);
+  --g-rim-a: rgba(255, 255, 255, .95); --g-rim-b: rgba(255, 255, 255, .38);
+  --g-glow-a: 23%; --g-glow-b: 15%;
+}
+html[data-at-glass="on"][data-at-theme="dark"] {
+  --g-bg: rgba(38, 41, 54, .52); --g-bg-strong: rgba(30, 33, 45, .72); --g-tint: rgba(255, 255, 255, .05);
+  --g-edge: rgba(255, 255, 255, .16); --g-line: rgba(255, 255, 255, .10); --g-hi: rgba(255, 255, 255, .20);
+  --g-shadow: 0 14px 40px rgba(0, 0, 0, .46), 0 1px 3px rgba(0, 0, 0, .4);
+  --g-blur: blur(22px) saturate(1.7);
+  --g-menu: rgba(28, 31, 43, .97); --g-spec: rgba(255, 255, 255, .10);
+  --g-rim-a: rgba(255, 255, 255, .36); --g-rim-b: rgba(255, 255, 255, .05);
+  --g-glow-a: 21%; --g-glow-b: 14%;
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  html[data-at-glass="on"][data-at-theme] {
+    --g-bg: var(--at-surface); --g-bg-strong: var(--at-surface); --g-tint: transparent; --g-edge: var(--at-line-2); --g-hi: transparent;
+    --g-blur: none; --g-menu: var(--at-surface); --g-spec: transparent; --g-rim-a: transparent; --g-rim-b: transparent; --g-glow-a: 0%; --g-glow-b: 0%;
+  }
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  /* the soft background the glass picks up */
+  html[data-at-glass="on"] body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(60vmax 46vmax at 10% -6%, color-mix(in srgb, var(--at-accent) var(--g-glow-a), transparent), transparent 62%),
+      radial-gradient(52vmax 44vmax at 96% 18%, color-mix(in srgb, color-mix(in srgb, var(--at-accent) 70%, #6aa4ff) var(--g-glow-b), transparent), transparent 60%),
+      radial-gradient(50vmax 40vmax at 70% 110%, color-mix(in srgb, color-mix(in srgb, var(--at-accent) 75%, #c58bff) var(--g-glow-b), transparent), transparent 62%);
+  }
+  /* the page wrappers must not hide that background (the colour stays on <html>) */
+  html[data-at-glass="on"] body:not(#at-x):not(#at-y) { background-color: transparent !important; }
+  html[data-at-glass="on"] body:not(#at-x) #app, html[data-at-glass="on"] body:not(#at-x) .content-full, html[data-at-glass="on"] body:not(#at-x) .content, html[data-at-glass="on"] body:not(#at-x) .layout-2col, html[data-at-glass="on"] body:not(#at-x) .content-2col, html[data-at-glass="on"] body:not(#at-x) .container { background-color: transparent !important; }
+  /* reading pages (a conversation) keep the glow quieter */
+  html[data-at-glass="on"] body:has(#conv-layout)::before { opacity: .5; }
+  /* top bar: floats and stays in view, content slides under it */
+  html[data-at-glass="on"] .navbar-default:not(#at-x):not(#at-y) {
+    position: sticky; top: 0; z-index: 1030;
+    background-color: var(--g-bg-strong) !important; border-bottom: 1px solid var(--g-line) !important;
+    box-shadow: inset 0 -1px 0 var(--g-hi), 0 6px 24px rgba(20, 24, 50, .06) !important;
+    -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  }
+  @media (min-width: 768px) { html[data-at-glass="on"] .navbar-default:not(#at-x) .navbar-collapse { background: transparent !important; } }
+  /* cards, menus, dialogs */
+  html[data-at-glass="on"] .dash-card:not(#at-x):not(#at-y), html[data-at-glass="on"] .card:not(#at-x):not(#at-y),
+  html[data-at-glass="on"] .modal-content:not(#at-x):not(#at-y), html[data-at-glass="on"] .at-news:not(#at-x):not(#at-y), html[data-at-glass="on"] .at-pop:not(#at-x):not(#at-y) {
+    background-color: var(--g-bg) !important;
+    background-image: radial-gradient(130% 70% at 0% 0%, var(--g-spec), transparent 62%), linear-gradient(160deg, var(--g-tint), transparent 55%) !important;
+    border: 1px solid var(--g-edge) !important;
+    box-shadow: var(--g-shadow), inset 0 1px 0 var(--g-hi) !important;
+    -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  }
+  /* menus and pop-overs: nearly opaque on purpose. A menu opens over text, so it has to stay readable whatever is
+     behind it (and a blur nested inside another blurred surface does not see the page anyway). The glass look
+     comes from the edge, the highlight and the shadow. */
+  html[data-at-glass="on"] .dropdown-menu:not(#at-x):not(#at-y), html[data-at-glass="on"] .popover:not(#at-x):not(#at-y) {
+    background-color: var(--g-menu) !important;
+    background-image: radial-gradient(120% 60% at 0% 0%, var(--g-spec), transparent 60%) !important;
+    border: 1px solid var(--g-edge) !important;
+    box-shadow: var(--g-shadow), inset 0 1px 0 var(--g-hi) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(1.8); backdrop-filter: blur(30px) saturate(1.8);
+  }
+  html[data-at-glass="on"] .dropdown-menu > li > a:hover:not(#at-x):not(#at-y), html[data-at-glass="on"] .dropdown-menu > li > a:focus:not(#at-x):not(#at-y) {
+    background-color: color-mix(in srgb, var(--at-accent) 14%, transparent) !important; color: var(--at-text) !important;
+  }
+  html[data-at-glass="on"] .dash-card:not(#at-x):not(#at-y), html[data-at-glass="on"] .card:not(#at-x):not(#at-y) { --at-r: 20px; border-radius: var(--at-r); position: relative; }
+  /* a mailbox card has a coloured band at the top: no border ring around it, the band runs to the very edge
+     and the lit rim is drawn over it */
+  html[data-at-glass="on"] .dash-card:not(#at-x):not(#at-y) { --at-bw: 0px; border-width: 0 !important; }
+  html[data-at-glass="on"] .dropdown-menu:not(#at-x):not(#at-y), html[data-at-glass="on"] .popover:not(#at-x):not(#at-y) { --at-r: 18px; border-radius: var(--at-r); }
+  html[data-at-glass="on"] .modal-content:not(#at-x):not(#at-y) { --at-r: 22px; border-radius: var(--at-r); }
+  html[data-at-glass="on"] .modal-backdrop.in { opacity: .35; }
+  /* the button group of a card keeps at least one corner radius away from the card's corners */
+  html[data-at-glass="on"] .dash-card-footer:not(#at-x):not(#at-y) { padding: 0 20px; bottom: 20px; }
+  /* the lit rim: a 1px gradient edge, bright where the light hits (top left, bottom right), faint in between */
+  @supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+    html[data-at-glass="on"] .dash-card::after, html[data-at-glass="on"] .card::after, html[data-at-glass="on"] .modal-content::after {
+      content: ""; position: absolute; inset: calc(-1 * var(--at-bw, 1px)); padding: 1px; border-radius: inherit; pointer-events: none; z-index: 2;
+      background: linear-gradient(135deg, var(--g-rim-a), var(--g-rim-b) 30%, transparent 52%, var(--g-rim-b) 74%, var(--g-rim-a));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+      mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    }
+  }
+  /* inside a glass card the header band and the button strip let the glass show through */
+  html[data-at-glass="on"] .dash-card h3:not(#at-x):not(#at-y), html[data-at-glass="on"] .dash-card-link:not(#at-x):not(#at-y) { background-color: color-mix(in srgb, var(--at-raised) 48%, transparent) !important; }
+  html[data-at-glass="on"] .dash-card .btn-trans:not(#at-x):not(#at-y) { background-color: transparent !important; }
+  html[data-at-glass="on"] .card .card-icon:not(#at-x) { background-color: color-mix(in srgb, var(--at-accent) 16%, transparent); }
+  /* primary buttons get a lit edge */
+  html[data-at-glass="on"] .btn-primary:not(.disabled):not([disabled]):not(#at-x) { background-image: linear-gradient(180deg, rgba(255, 255, 255, .20), rgba(255, 255, 255, 0) 58%); box-shadow: 0 5px 16px color-mix(in srgb, var(--at-accent) 28%, transparent); }
+}
+@media print { html[data-at-glass="on"] body::before { display: none !important; } }

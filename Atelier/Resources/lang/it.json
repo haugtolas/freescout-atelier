@@ -101,5 +101,9 @@
   "Turn off announcements": "Disattiva gli annunci",
   "Atelier news": "Novità di Atelier",
   "Your opinion": "La vostra opinione",
-  "Give feedback": "Dare un parere"
+  "Give feedback": "Dare un parere",
+  "Surfaces": "Superfici",
+  "Standard": "Standard",
+  "Liquid glass": "Liquid glass (vetro liquido)",
+  "Liquid glass: translucent, blurred surfaces (top bar, cards, menus, dialogs) over a soft background in your accent colour. Needs a recent browser, and switches itself off when the device asks for reduced transparency. Each agent can change it from the top bar.": "Liquid glass: superfici traslucide e sfocate (barra superiore, schede, menu, finestre) su uno sfondo morbido nel colore d'accento. Richiede un browser recente e si disattiva da solo quando il dispositivo chiede meno trasparenza. Ogni agente può cambiarlo dalla barra superiore."
 }

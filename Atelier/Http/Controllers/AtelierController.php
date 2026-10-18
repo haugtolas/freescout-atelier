@@ -300,6 +300,20 @@ class AtelierController extends Controller
         ]);
     }
 
+    /**
+     * Store a default (theme, mail, palette, density, glass). When the value really changes, remember when: browsers that
+     * hold a personal choice for it drop that choice once, so the new default is seen by everyone, not only by agents
+     * who never picked anything.
+     */
+    private static function setDefault($key, $value, $fallback)
+    {
+        $old = \Modules\Atelier\Providers\AtelierServiceProvider::opt($key.'_default', $fallback);
+        if ((string)$old !== (string)$value) {
+            \Option::set('atelier.stamp_'.$key, time());
+        }
+        \Option::set('atelier.'.$key.'_default', $value);
+    }
+
     public function save(Request $request)
     {
         $theme = in_array($request->input('theme_default'), ['auto', 'light', 'dark']) ? $request->input('theme_default') : 'auto';
@@ -307,15 +321,16 @@ class AtelierController extends Controller
         $accent = self::normAccent($request->input('accent')) ?: 'azur';
         $palette = in_array($request->input('palette_default'), P::PALETTES) ? $request->input('palette_default') : 'graphite';
         $density = in_array($request->input('density_default'), ['comfortable', 'compact']) ? $request->input('density_default') : 'comfortable';
-        \Option::set('atelier.palette_default', $palette);
-        \Option::set('atelier.density_default', $density);
+        self::setDefault('palette', $palette, 'graphite');
+        self::setDefault('density', $density, 'comfortable');
+        self::setDefault('glass', $request->input('glass_default') === 'on' ? 'on' : 'off', 'off');
         \Option::set('atelier.icons_modern', $request->input('icons_modern') ? '1' : '0');
         \Option::set('atelier.hide_other_toggle', $request->input('hide_other_toggle') ? '1' : '0');
         \Option::set('atelier.sender_logos', $request->input('sender_logos') ? '1' : '0');
         \Option::set('atelier.news', $request->input('news') ? '1' : '0');
         \Option::set('atelier.logo_keep', $request->input('logo_keep') ? '1' : '0');
-        \Option::set('atelier.theme_default', $theme);
-        \Option::set('atelier.mail_default', $mail);
+        self::setDefault('theme', $theme, 'auto');
+        self::setDefault('mail', $mail, 'adapted');
         \Option::set('atelier.accent4', $accent);
         \Option::set('atelier.mbx_recolor', $request->input('mbx_recolor') ? '1' : '0');
         \Option::set('atelier.extra_css', self::cleanCss((string)$request->input('extra_css', '')));
@@ -379,7 +394,7 @@ class AtelierController extends Controller
     /** One file with everything: options, mailbox accents (by e-mail, so they survive another installation), both logos. */
     public function export()
     {
-        $keys = ['theme_default', 'mail_default', 'palette_default', 'density_default', 'icons_modern', 'hide_other_toggle', 'sender_logos', 'news', 'logo_keep', 'accent4', 'mbx_recolor', 'extra_css'];
+        $keys = ['theme_default', 'mail_default', 'palette_default', 'density_default', 'glass_default', 'icons_modern', 'hide_other_toggle', 'sender_logos', 'news', 'logo_keep', 'accent4', 'mbx_recolor', 'extra_css'];
         $options = [];
         foreach ($keys as $k) {
             $ov = \Option::get('atelier.'.$k, '');
@@ -433,10 +448,11 @@ class AtelierController extends Controller
         $flag = function ($k, $def) use ($o) {
             return (isset($o[$k]) && in_array((string)$o[$k], ['0', '1'], true)) ? (string)$o[$k] : $def;
         };
-        \Option::set('atelier.theme_default', $pick('theme_default', ['auto', 'light', 'dark'], 'auto'));
-        \Option::set('atelier.mail_default', $pick('mail_default', ['adapted', 'paper'], 'adapted'));
-        \Option::set('atelier.palette_default', $pick('palette_default', P::PALETTES, 'graphite'));
-        \Option::set('atelier.density_default', $pick('density_default', ['comfortable', 'compact'], 'comfortable'));
+        self::setDefault('theme', $pick('theme_default', ['auto', 'light', 'dark'], 'auto'), 'auto');
+        self::setDefault('mail', $pick('mail_default', ['adapted', 'paper'], 'adapted'), 'adapted');
+        self::setDefault('palette', $pick('palette_default', P::PALETTES, 'graphite'), 'graphite');
+        self::setDefault('density', $pick('density_default', ['comfortable', 'compact'], 'comfortable'), 'comfortable');
+        self::setDefault('glass', $pick('glass_default', ['off', 'on'], 'off'), 'off');
         \Option::set('atelier.accent4', self::normAccent(isset($o['accent4']) ? $o['accent4'] : '') ?: 'azur');
         \Option::set('atelier.icons_modern', $flag('icons_modern', '1'));
         \Option::set('atelier.hide_other_toggle', $flag('hide_other_toggle', '1'));

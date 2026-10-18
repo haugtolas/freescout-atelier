@@ -17,6 +17,7 @@
 - **Any accent colour**: a curated palette or any colour you like. Contrast is adjusted automatically so buttons and links stay readable in both themes.
 - **Per-mailbox accent colours** (optional), with a switch to keep the global accent inside mailboxes if you prefer.
 - **Fine line icons** replacing the stock glyphs (optional).
+- **Liquid glass** (optional): translucent, blurred surfaces over a soft accent-coloured background, switchable per agent.
 - **Readable e-mails in dark mode**, with the original rendering one click away.
 - **Sender logos as avatars** for customers without a photo (optional; the server fetches each logo once and sends only the domain name).
 - **Light and dark logos**, live preview, import / export of the settings.

@@ -101,5 +101,9 @@
   "Turn off announcements": "Mitteilungen abschalten",
   "Atelier news": "Atelier-Neuigkeiten",
   "Your opinion": "Ihre Meinung",
-  "Give feedback": "Feedback geben"
+  "Give feedback": "Feedback geben",
+  "Surfaces": "Oberflächen",
+  "Standard": "Standard",
+  "Liquid glass": "Liquid Glass (Flüssigglas)",
+  "Liquid glass: translucent, blurred surfaces (top bar, cards, menus, dialogs) over a soft background in your accent colour. Needs a recent browser, and switches itself off when the device asks for reduced transparency. Each agent can change it from the top bar.": "Liquid Glass: durchscheinende, unscharfe Oberflächen (obere Leiste, Karten, Menüs, Dialoge) auf einem weichen Hintergrund in Ihrer Akzentfarbe. Benötigt einen aktuellen Browser und schaltet sich ab, wenn das Gerät weniger Transparenz verlangt. Jeder Agent kann es in der oberen Leiste ändern."
 }

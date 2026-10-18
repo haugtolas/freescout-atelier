@@ -17,12 +17,29 @@
     function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
     function put(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 
+    /* A default changed in Settings > Atelier applies to everyone once: a personal choice made before that change is dropped */
+    (function dropStale() {
+        var raw = meta('atelier-stamps', ''); if (!raw) { return; }
+        var st; try { st = JSON.parse(raw); } catch (e) { return; }
+        var seen; try { seen = JSON.parse(get('at-stamps') || '{}') || {}; } catch (e) { seen = {}; }
+        var keys = { theme: 'at-theme', mail: 'at-mail', palette: 'at-palette', density: 'at-density', glass: 'at-glass' };
+        var changed = false;
+        for (var k in keys) {
+            if (st[k] && seen[k] !== st[k]) {
+                try { localStorage.removeItem(keys[k]); } catch (e) {}
+                seen[k] = st[k]; changed = true;
+            }
+        }
+        if (changed) { put('at-stamps', JSON.stringify(seen)); }
+    })();
+
     var ovr = null; /* live preview from Settings > Atelier: {theme, palette, density, accent} */
     function themeMode() { if (ovr && ovr.theme) { return ovr.theme; } var s = get('at-theme'); return (s === 'auto' || s === 'light' || s === 'dark') ? s : meta('atelier-theme', 'auto'); }
     function mailMode() { var s = get('at-mail'); return (s === 'adapted' || s === 'paper') ? s : meta('atelier-mail', 'adapted'); }
 
     var PALS = ['graphite', 'ardoise', 'minuit', 'foret', 'sable'];
     function palMode() { if (ovr && ovr.palette) { return ovr.palette; } var s = get('at-palette'); return PALS.indexOf(s) > -1 ? s : meta('atelier-palette', 'graphite'); }
+    function glassMode() { var s = get('at-glass'); return (s === 'on' || s === 'off') ? s : (meta('atelier-glass', 'off') === 'on' ? 'on' : 'off'); }
     function denMode() { if (ovr && ovr.density) { return ovr.density; } var s = get('at-density'); return (s === 'comfortable' || s === 'compact') ? s : meta('atelier-density', 'comfortable'); }
 
     /* browser chrome on phones: status bar / address bar colour and form-control scheme follow the theme, not the phone */
@@ -73,6 +90,7 @@
         root.setAttribute('data-at-mail', mailMode());
         root.setAttribute('data-at-palette', palMode());
         root.setAttribute('data-at-density', denMode());
+        root.setAttribute('data-at-glass', glassMode());
         root.setAttribute('data-at-icons', meta('atelier-icons', '1') === '1' ? 'modern' : 'off');
         root.style.setProperty('color-scheme', dark ? 'dark' : 'light', 'important');
         stripForeign();
@@ -80,12 +98,13 @@
         mbxPage();
         syncBrowserChrome(dark);
         if (dark) { clearLight(); schedGuard(); } else { clearGuard(); schedLight(); }
-        var items = document.querySelectorAll('.at-theme-menu a[data-at-theme], .at-theme-menu a[data-at-mail], .at-theme-menu a[data-at-pal], .at-theme-menu a[data-at-density]');
+        var items = document.querySelectorAll('.at-theme-menu a[data-at-theme], .at-theme-menu a[data-at-mail], .at-theme-menu a[data-at-pal], .at-theme-menu a[data-at-density], .at-theme-menu a[data-at-glass]');
         for (var i = 0; i < items.length; i++) {
             var a = items[i], on;
             if (a.hasAttribute('data-at-theme')) { on = a.getAttribute('data-at-theme') === m; }
             else if (a.hasAttribute('data-at-mail')) { on = a.getAttribute('data-at-mail') === mailMode(); }
             else if (a.hasAttribute('data-at-pal')) { on = a.getAttribute('data-at-pal') === palMode(); a.classList.toggle('at-sel', on); }
+            else if (a.hasAttribute('data-at-glass')) { on = a.getAttribute('data-at-glass') === glassMode(); }
             else { on = a.getAttribute('data-at-density') === denMode(); }
             if (!a.hasAttribute('data-at-pal')) { a.parentNode.classList.toggle('at-on', on); }
         }
@@ -268,15 +287,20 @@
             '<li class="dropdown-header">' + esc(t('density')) + '</li>' +
             '<li><a href="#" data-at-density="comfortable">' + esc(t('comfortable')) + '</a></li>' +
             '<li><a href="#" data-at-density="compact">' + esc(t('compact')) + '</a></li>' +
+            '<li class="divider"></li>' +
+            '<li class="dropdown-header">' + esc(t('effect')) + '</li>' +
+            '<li><a href="#" data-at-glass="off">' + esc(t('standard')) + '</a></li>' +
+            '<li><a href="#" data-at-glass="on">' + esc(t('glass')) + '</a></li>' +
             '</ul>';
         right.insertBefore(li, right.firstChild);
         li.addEventListener('click', function (e) {
-            var a = e.target.closest ? e.target.closest('a[data-at-theme], a[data-at-mail], a[data-at-pal], a[data-at-density]') : null;
+            var a = e.target.closest ? e.target.closest('a[data-at-theme], a[data-at-mail], a[data-at-pal], a[data-at-density], a[data-at-glass]') : null;
             if (!a) { return; }
             e.preventDefault();
             if (a.hasAttribute('data-at-theme')) { put('at-theme', a.getAttribute('data-at-theme')); }
             else if (a.hasAttribute('data-at-pal')) { put('at-palette', a.getAttribute('data-at-pal')); }
             else if (a.hasAttribute('data-at-density')) { put('at-density', a.getAttribute('data-at-density')); }
+            else if (a.hasAttribute('data-at-glass')) { put('at-glass', a.getAttribute('data-at-glass')); }
             else { put('at-mail', a.getAttribute('data-at-mail')); clearOverrides(); }
             apply();
         });
@@ -776,5 +800,33 @@
             }).observe(document.body, { childList: true, subtree: true });
         }
     }
+
+    /* ---- drop-downs of the dashboard cards and of the mailbox sidebar: open where there is room ----
+       FreeScout always opens them upwards; on the top row the long settings menu then ran under the top bar. */
+    function fitMenu(e) {
+        try {
+            var t = e.target && e.target.closest ? e.target.closest('[data-toggle="dropdown"]') : null;
+            if (!t || !t.closest('.dash-card-footer, .sidebar-buttons')) { return; }
+            var grp = t.closest('.btn-group');
+            var menu = grp && grp.querySelector('.dropdown-menu');
+            if (!menu || grp.classList.contains('open')) { return; }
+            if (grp.getAttribute('data-at-up') === null) { grp.setAttribute('data-at-up', grp.classList.contains('dropup') ? '1' : '0'); }
+            var keep = menu.getAttribute('style');
+            menu.style.cssText = 'display:block;visibility:hidden;max-height:none;overflow:visible';
+            var h = menu.offsetHeight;
+            if (keep === null) { menu.removeAttribute('style'); } else { menu.setAttribute('style', keep); }
+            var top = 0, nav = document.querySelector('.navbar');
+            if (nav) { var pos = window.getComputedStyle(nav).position; if (pos === 'sticky' || pos === 'fixed') { top = Math.max(0, nav.getBoundingClientRect().bottom); } }
+            var r = t.getBoundingClientRect();
+            var above = r.top - top - 10, below = window.innerHeight - r.bottom - 10;
+            var up = grp.getAttribute('data-at-up') === '1';
+            if (up && h > above && below > above) { up = false; } else if (!up && h > below && above > below) { up = true; }
+            var room = up ? above : below;
+            grp.classList.toggle('dropup', up);
+            if (h > room) { menu.style.maxHeight = Math.max(160, room) + 'px'; menu.style.overflowY = 'auto'; }
+            else { menu.style.maxHeight = ''; menu.style.overflowY = ''; }
+        } catch (err) { }
+    }
+    document.addEventListener('click', fitMenu, true);
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
 })();

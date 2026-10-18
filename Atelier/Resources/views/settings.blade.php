@@ -120,6 +120,17 @@
     </div>
 
     <div class="form-group">
+        <label class="col-sm-2 control-label">{{ __('Surfaces') }}</label>
+        <div class="col-sm-6">
+            <select name="glass_default" class="form-control input-sized-lg">
+                <option value="off" @if ($opt('glass_default', 'off') !== 'on') selected @endif>{{ __('Standard') }}</option>
+                <option value="on" @if ($opt('glass_default', 'off') === 'on') selected @endif>{{ __('Liquid glass') }}</option>
+            </select>
+            <p class="form-help">{{ __('Liquid glass: translucent, blurred surfaces (top bar, cards, menus, dialogs) over a soft background in your accent colour. Needs a recent browser, and switches itself off when the device asks for reduced transparency. Each agent can change it from the top bar.') }}</p>
+        </div>
+    </div>
+
+    <div class="form-group">
         <div class="col-sm-6 col-sm-offset-2">
             <label class="checkbox-inline"><input type="checkbox" name="icons_modern" value="1" @if ($opt('icons_modern', '1') === '1') checked @endif> {{ __('Modern line icons') }}</label>
             <p class="form-help">{{ __('Replaces the standard FreeScout icons with fine line icons. Untick to get the original icons back.') }}</p>
@@ -293,14 +304,14 @@
     .at-mbx-ctl { flex: 1 1 240px; min-width: 0; }
     @media (max-width: 767px) { .at-sw { width: 36px; height: 36px; min-width: 36px; } .at-pop { width: 100%; } .at-pick-trigger { width: 100%; justify-content: flex-start; } .at-pick-trigger .at-pick-caret { margin-left: auto; } .at-mbx-ctl { flex-basis: 100%; } }
     .at-pv-wrap { display: flex; gap: 14px; flex-wrap: wrap; position: sticky; top: 8px; z-index: 5; }
-    .at-pv { flex: 1 1 240px; max-width: 300px; border-radius: 12px; overflow: hidden; border: 1px solid var(--p-line); background: var(--p-page); color: var(--p-text); font-size: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+    .at-pv { flex: 1 1 240px; max-width: 300px; border-radius: 17px; overflow: hidden; border: 1px solid var(--p-line); background: var(--p-page); color: var(--p-text); font-size: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.12); }
     .at-pv-nav { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--p-nav); border-bottom: 1px solid var(--p-line); }
     .at-pv-logo { width: 14px; height: 14px; border-radius: 50%; background: var(--p-text); }
     .at-pv-tab { padding: 3px 8px; border-radius: 6px; background: var(--p-soft); color: var(--p-link); font-weight: 600; }
     .at-pv-nt { color: var(--p-muted); }
     .at-pv-th { margin-left: auto; color: var(--p-muted); font-size: 11px; }
-    .at-pv-body { padding: 10px; }
-    .at-pv-card { background: var(--p-surface); border: 1px solid var(--p-line); border-radius: 10px; overflow: hidden; }
+    .at-pv-body { padding: 8px; }
+    .at-pv-card { background: var(--p-surface); border: 1px solid var(--p-line); border-radius: 8px; overflow: hidden; }
     .at-pv-h { background: var(--p-raised); padding: 7px 10px; display: flex; flex-direction: column; }
     .at-pv-h small { color: var(--p-muted); }
     .at-pv-row { display: flex; justify-content: space-between; padding: 5px 10px; color: var(--p-muted); }

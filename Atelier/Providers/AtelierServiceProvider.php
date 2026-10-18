@@ -73,6 +73,9 @@ class AtelierServiceProvider extends ServiceProvider
                     'newsNews' => __('Atelier news'),
                     'newsFeedback' => __('Your opinion'),
                     'newsGive' => __('Give feedback'),
+                    'effect' => __('Surfaces'),
+                    'standard' => __('Standard'),
+                    'glass' => __('Liquid glass'),
                 ];
                 $rev = (int)\Option::get('atelier.rev', 1);
                 $mbx = self::mailboxAccents();
@@ -90,10 +93,18 @@ class AtelierServiceProvider extends ServiceProvider
                     }
                     app()->terminating(function () { \Modules\Atelier\Services\News::refreshIfStale(); });
                 }
+                $stamps = [];
+                foreach (['theme', 'mail', 'palette', 'density', 'glass'] as $sk) {
+                    $sv = (int)self::opt('stamp_'.$sk, 0);
+                    if ($sv > 0) { $stamps[$sk] = $sv; }
+                }
+                $stampsMeta = $stamps ? '<meta name="atelier-stamps" content="'.e(json_encode($stamps)).'">'."\n" : '';
                 $out = $newsMeta.'<meta name="atelier-theme" content="'.e(self::opt('theme_default', 'auto')).'">'."\n"
                     .'<meta name="atelier-mail" content="'.e(self::opt('mail_default', 'adapted')).'">'."\n"
                     .'<meta name="atelier-palette" content="'.e(self::opt('palette_default', 'graphite')).'">'."\n"
                     .'<meta name="atelier-density" content="'.e(self::opt('density_default', 'comfortable')).'">'."\n"
+                    .'<meta name="atelier-glass" content="'.(self::opt('glass_default', 'off') === 'on' ? 'on' : 'off').'">'."\n"
+                    .$stampsMeta
                     .'<meta name="atelier-icons" content="'.(self::opt('icons_modern', '1') === '1' ? '1' : '0').'">'."\n"
                     .'<meta name="atelier-logo-auto" content="'.((!self::logoPath('light') && !self::logoPath('dark') && self::opt('logo_keep', '0') !== '1') ? '1' : '0').'">'."\n"
                     .(self::opt('sender_logos', '1') === '1' ? '<meta name="atelier-logos" content="'.e(route('atelier.favicon', ['domain' => 'example.com'])).'">'."\n" : '')
