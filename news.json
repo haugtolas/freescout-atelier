@@ -1,1 +1,25 @@
-{ "items": [] }
+{
+  "items": [
+    {
+      "id": "1.7.0",
+      "kind": "news",
+      "date": "2026-10-18",
+      "min_version": "1.7.0",
+      "title": {
+        "fr": "Atelier 1.7 : Liquid glass et coins retravaillés",
+        "en": "Atelier 1.7: Liquid glass and reworked corners",
+        "de": "Atelier 1.7: Liquid Glass und überarbeitete Ecken",
+        "es": "Atelier 1.7: Liquid glass y esquinas rediseñadas",
+        "it": "Atelier 1.7: Liquid glass e angoli rivisti"
+      },
+      "body": {
+        "fr": "Nouveau : un rendu verre dépoli, optionnel (Réglages > Atelier > Surfaces, ou le menu thème de la barre du haut). Les coins arrondis sont désormais concentriques, les boutons et champs suivent une même échelle de tailles, et les éditeurs restent lisibles en thème sombre.",
+        "en": "New: an optional frosted-glass look (Settings > Atelier > Surfaces, or the theme menu in the top bar). Rounded corners are now concentric, buttons and fields follow one size scale, and editors stay readable in the dark theme.",
+        "de": "Neu: ein optionaler Milchglas-Look (Einstellungen > Atelier > Oberflächen oder das Themenmenü in der oberen Leiste). Abgerundete Ecken sind jetzt konzentrisch, Schaltflächen und Felder folgen einer Größenskala, und Editoren bleiben im dunklen Thema lesbar.",
+        "es": "Novedad: un aspecto de cristal esmerilado, opcional (Ajustes > Atelier > Superficies, o el menú de tema de la barra superior). Las esquinas redondeadas ahora son concéntricas, los botones y campos siguen una misma escala de tamaños y los editores se leen bien en el tema oscuro.",
+        "it": "Novità: un aspetto in vetro smerigliato, opzionale (Impostazioni > Atelier > Superfici, o il menu del tema nella barra in alto). Gli angoli arrotondati ora sono concentrici, pulsanti e campi seguono un'unica scala di dimensioni e gli editor restano leggibili nel tema scuro."
+      },
+      "url": "https://github.com/haugtolas/freescout-atelier/blob/main/CHANGELOG.md"
+    }
+  ]
+}
