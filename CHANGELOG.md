@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.1
+
+- Liquid glass: the lit edge of cards, mailbox cards and dialogs now runs all the way round. It used to fade out completely at the top right and bottom left corners, so those corners looked dull, almost angular, next to the bright top left one. The edge keeps its light-from-the-top-left feel but never disappears, in light and dark.
+- Home page: the settings menu of a mailbox card no longer slips under the card below it. A card that is hovered, or whose menu is open, now rises above its neighbours, so every entry of the menu stays visible and clickable (the menu used to vanish behind the next card as soon as the pointer came near).
+- Icon-only buttons are centred exactly, in light and dark, with or without Liquid glass, with Atelier's icons or the original ones: the arrow that opens a mailbox, the envelope and the cog with its small arrow in the mailbox buttons, and the other icon buttons of the interface. The glyph and the arrow of the cog sit on the same line, and the pair is centred in the button.
+
 ## 1.7.0
 
 - New, optional: **Liquid glass**. Translucent, blurred surfaces (top bar, cards, dialogs) over a soft background in your accent colour that reaches the whole page, in light and dark. Menus and pop-overs are almost opaque so text behind them never shows through; the glass look comes from their lit edge, highlight and shadow. The top bar floats and stays in view. Never applied to e-mails, conversation threads or lists. Off by default: choose it in Settings > Atelier > Surfaces, and each agent can switch it from the theme menu in the top bar. It switches itself off when the device asks for reduced transparency or more contrast, and on browsers without background blur.

@@ -28,6 +28,11 @@ html[data-at-theme] .sidebar-menu > li.menu-padded > a { padding-left: 30px; }
 /* mailbox cards (home): one calm block, no separator lines */
 html[data-at-theme] .dash-card { --at-r: 16px; border-radius: var(--at-r); transition: transform .18s ease, box-shadow .18s ease; }
 html[data-at-theme] .dash-card:hover { transform: translateY(-2px); box-shadow: var(--at-shadow-lg); }
+/* every card is its own stacking context (hover lift, glass blur), so a menu opened from a card used to slide under the card
+   below it: the hovered card and the card with an open menu rise above their neighbours */
+html[data-at-theme] .dash-card:not(#at-x) { position: relative; }
+html[data-at-theme] .dash-card:not(#at-x):hover, html[data-at-theme] .dash-card:not(#at-x):focus-within { z-index: 5; }
+html[data-at-theme] :is(.dash-card, .card):not(#at-x):has(.btn-group.open, .dropdown.open, .open > .dropdown-menu) { position: relative; z-index: 10; }
 html[data-at-theme] .dash-card h3, html[data-at-theme] .dash-card-link { border: 0 !important; border-bottom: 0 !important; box-shadow: none !important; }
 html[data-at-theme] .dash-card-link, html[data-at-theme] .dash-card-link a { color: var(--at-muted); }
 html[data-at-theme] .dash-card-list-item { border-radius: 8px; margin: 0 8px; padding-left: 12px; padding-right: 12px; }
@@ -180,7 +185,7 @@ html[data-at-theme] .conv-row .conv-subject:not(#at-x), html[data-at-theme] .con
 html[data-at-theme] .thread-body .at-mail:not(#at-x) { opacity: 1 !important; }
 
 /* ---- 1.2.8: toolbar icons (cog, envelope) were pushed 3px low by the font-icon offset of core; centre them ---- */
-html[data-at-theme]:not([data-at-icons="off"]) .sidebar-buttons .btn i.glyphicon { top: -1.5px !important; vertical-align: middle; }
+html[data-at-theme]:not([data-at-icons="off"]) .sidebar-buttons .btn i.glyphicon:not(:only-child) { top: -1.5px !important; vertical-align: middle; }
 html[data-at-theme]:not([data-at-icons="off"]) .sidebar-buttons .btn .caret { vertical-align: middle; position: relative; top: -1.5px; margin-left: 3px; }
 html[data-at-theme]:not([data-at-icons="off"]) .sidebar-buttons .btn { line-height: 34px; padding: 0 4px; height: 36px; white-space: nowrap; }
 
@@ -280,6 +285,25 @@ html[data-at-theme] .dash-card .btn-group-justified > .btn, html[data-at-theme] 
 html[data-at-theme] .dash-card .btn-group-justified > .btn-group > .btn { display: flex; align-items: center; justify-content: center; height: 100%; min-height: 36px; box-sizing: border-box; padding-top: 0; padding-bottom: 0; }
 html[data-at-theme] .dash-card .btn-group-justified .btn > i.glyphicon { top: 0 !important; display: block; flex: none; width: 16px; height: 16px; margin: 0 auto; line-height: 16px !important; }
 html[data-at-theme] .dash-card .btn-group-justified .btn > i.glyphicon:before { display: block; width: 16px; height: 16px; line-height: 16px; vertical-align: 0; text-align: center; }
+
+/* ---- every icon-only button: the icon sits on the exact middle of the button (measured, not guessed).
+   FreeScout nudges glyphicons down by 1 to 3 px for its own font, and the nudge differs from one button type to the next. ---- */
+html[data-at-theme] .btn > i.glyphicon:only-child { top: 0 !important; display: block; flex: none; width: 1em; height: 1em; margin: 0 auto; line-height: 1em !important; vertical-align: middle; }
+html[data-at-theme] .btn > i.glyphicon:only-child:before { display: block; width: 1em; height: 1em; line-height: 1em; vertical-align: 0; text-align: center; }
+html[data-at-theme] .btn:not(.btn-block):not(.btn-group-justified > .btn):has(> i.glyphicon:only-child) { display: inline-flex; align-items: center; justify-content: center; padding-top: 0; padding-bottom: 0; }
+html[data-at-theme] .btn-group-justified > .btn, html[data-at-theme] .btn-group-justified > .btn-group { vertical-align: middle; }
+/* glyph + caret (settings cog) in transparent toolbar buttons: both sit on the same centre line in both icon sets */
+html[data-at-theme] .sidebar-buttons .btn:has(> i.glyphicon + .caret):not(#at-x), html[data-at-theme] .btn.btn-trans:has(> i.glyphicon + .caret):not(#at-x) { display: flex; align-items: center; justify-content: center; gap: 4px; padding-top: 0; padding-bottom: 0; }
+html[data-at-theme] .sidebar-buttons .btn > i.glyphicon:has(+ .caret):not(#at-x), html[data-at-theme] .btn.btn-trans > i.glyphicon:has(+ .caret):not(#at-x) { top: 0 !important; display: block; flex: none; width: 1em; height: 1em; margin: 0; line-height: 1em !important; vertical-align: middle; }
+html[data-at-theme] .sidebar-buttons .btn > i.glyphicon:has(+ .caret):not(#at-x):before, html[data-at-theme] .btn.btn-trans > i.glyphicon:has(+ .caret):not(#at-x):before { display: block; width: 1em; height: 1em; line-height: 1em; vertical-align: 0; text-align: center; }
+html[data-at-theme] .sidebar-buttons .btn > i.glyphicon + .caret:not(#at-x), html[data-at-theme] .btn.btn-trans > i.glyphicon + .caret:not(#at-x) { top: 0 !important; margin: 0 !important; flex: none; vertical-align: middle; }
+html[data-at-theme]:not([data-at-icons="off"]) .sidebar-buttons .btn > i.glyphicon:has(+ .caret):not(#at-x), html[data-at-theme]:not([data-at-icons="off"]) .btn.btn-trans > i.glyphicon:has(+ .caret):not(#at-x) { top: -.25px !important; }
+html[data-at-theme][data-at-icons="off"] .sidebar-buttons .btn > i.glyphicon:has(+ .caret):not(#at-x), html[data-at-theme][data-at-icons="off"] .btn.btn-trans > i.glyphicon:has(+ .caret):not(#at-x) { top: .75px !important; }
+/* optical centring of the cog+caret pair (the line cog has more ink on its left) and of two native glyphs in the "icons off" set */
+html[data-at-theme]:not([data-at-icons="off"]) .sidebar-buttons .btn:has(> i.glyphicon + .caret):not(#at-x) { padding-right: 6px; }
+html[data-at-theme][data-at-icons="off"] .btn-sidebar > i.glyphicon-arrow-right:only-child:not(#at-x) { top: -.9px !important; }
+html[data-at-theme][data-at-icons="off"] .sidebar-buttons .btn > i.glyphicon-envelope:only-child:not(#at-x) { top: .8px !important; }
+html[data-at-theme] .btn-group-justified > .btn-group > .btn:has(> i.glyphicon:only-child) { display: flex; align-items: center; justify-content: center; height: 100%; min-height: 36px; box-sizing: border-box; padding-top: 0; padding-bottom: 0; }
 
 /* ---- users page: the admin badge keeps the same distance from the top and right edges, clear of the rounded corner ---- */
 html[data-at-theme] .card > .user-admin-badge { top: 13px; right: 13px; width: 14px; height: 14px; line-height: 14px; display: block; }
@@ -386,7 +410,7 @@ html[data-at-glass="on"][data-at-theme="light"] {
   --g-shadow: 0 10px 34px rgba(30, 40, 90, .13), 0 1px 3px rgba(30, 40, 90, .08), 0 0 0 .5px rgba(60, 70, 120, .14);
   --g-blur: blur(22px) saturate(1.8);
   --g-menu: rgba(255, 255, 255, .97); --g-spec: rgba(255, 255, 255, .55);
-  --g-rim-a: rgba(255, 255, 255, .95); --g-rim-b: rgba(255, 255, 255, .38);
+  --g-rim-a: rgba(255, 255, 255, .95); --g-rim-b: rgba(255, 255, 255, .7); --g-rim-c: rgba(255, 255, 255, .55);
   --g-glow-a: 23%; --g-glow-b: 15%;
 }
 html[data-at-glass="on"][data-at-theme="dark"] {
@@ -395,13 +419,13 @@ html[data-at-glass="on"][data-at-theme="dark"] {
   --g-shadow: 0 14px 40px rgba(0, 0, 0, .46), 0 1px 3px rgba(0, 0, 0, .4);
   --g-blur: blur(22px) saturate(1.7);
   --g-menu: rgba(28, 31, 43, .97); --g-spec: rgba(255, 255, 255, .10);
-  --g-rim-a: rgba(255, 255, 255, .36); --g-rim-b: rgba(255, 255, 255, .05);
+  --g-rim-a: rgba(255, 255, 255, .36); --g-rim-b: rgba(255, 255, 255, .22); --g-rim-c: rgba(255, 255, 255, .16);
   --g-glow-a: 21%; --g-glow-b: 14%;
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   html[data-at-glass="on"][data-at-theme] {
     --g-bg: var(--at-surface); --g-bg-strong: var(--at-surface); --g-tint: transparent; --g-edge: var(--at-line-2); --g-hi: transparent;
-    --g-blur: none; --g-menu: var(--at-surface); --g-spec: transparent; --g-rim-a: transparent; --g-rim-b: transparent; --g-glow-a: 0%; --g-glow-b: 0%;
+    --g-blur: none; --g-menu: var(--at-surface); --g-spec: transparent; --g-rim-a: transparent; --g-rim-b: transparent; --g-rim-c: transparent; --g-glow-a: 0%; --g-glow-b: 0%;
   }
 }
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -461,7 +485,7 @@ html[data-at-glass="on"][data-at-theme="dark"] {
   @supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
     html[data-at-glass="on"] .dash-card::after, html[data-at-glass="on"] .card::after, html[data-at-glass="on"] .modal-content::after {
       content: ""; position: absolute; inset: calc(-1 * var(--at-bw, 1px)); padding: 1px; border-radius: inherit; pointer-events: none; z-index: 2;
-      background: linear-gradient(135deg, var(--g-rim-a), var(--g-rim-b) 30%, transparent 52%, var(--g-rim-b) 74%, var(--g-rim-a));
+      background: linear-gradient(135deg, var(--g-rim-a), var(--g-rim-b) 28%, var(--g-rim-c) 50%, var(--g-rim-b) 72%, var(--g-rim-a));
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
       mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
     }
