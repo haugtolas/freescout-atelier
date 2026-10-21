@@ -1,6 +1,26 @@
 {
   "items": [
     {
+      "id": "shopify-module-1.0.0",
+      "kind": "news",
+      "date": "2026-10-21",
+      "title": {
+        "fr": "Nouveau module : Shopify pour FreeScout",
+        "en": "New module: Shopify for FreeScout",
+        "de": "Neues Modul: Shopify für FreeScout",
+        "es": "Nuevo módulo: Shopify para FreeScout",
+        "it": "Nuovo modulo: Shopify per FreeScout"
+      },
+      "body": {
+        "fr": "Le client Shopify et ses dernières commandes s'affichent à côté de chaque conversation, avec le détail de la commande, les numéros de commande cliquables dans les messages et la synchronisation de la fiche client. Lecture seule, gratuit et open source, avec mises à jour depuis Manage > Modules.",
+        "en": "The Shopify customer and their latest orders appear next to each conversation, with order details, clickable order numbers in messages and customer profile sync. Read-only, free and open source, with updates from Manage > Modules.",
+        "de": "Der Shopify-Kunde und seine letzten Bestellungen erscheinen neben jeder Konversation, mit Bestelldetails, anklickbaren Bestellnummern in Nachrichten und Abgleich des Kundenprofils. Nur lesend, kostenlos und Open Source, Updates über Manage > Modules.",
+        "es": "El cliente de Shopify y sus últimos pedidos aparecen junto a cada conversación, con el detalle del pedido, números de pedido clicables en los mensajes y sincronización de la ficha del cliente. Solo lectura, gratuito y de código abierto, con actualizaciones desde Manage > Modules.",
+        "it": "Il cliente Shopify e i suoi ultimi ordini compaiono accanto a ogni conversazione, con i dettagli dell'ordine, numeri d'ordine cliccabili nei messaggi e sincronizzazione della scheda cliente. Sola lettura, gratuito e open source, con aggiornamenti da Manage > Modules."
+      },
+      "url": "https://github.com/haugtolas/freescout-shopify"
+    },
+    {
       "id": "1.7.0",
       "kind": "news",
       "date": "2026-10-18",
